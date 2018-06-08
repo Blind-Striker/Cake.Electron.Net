@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using Cake.Electron.Net.Contracts;
 
-namespace Cake.Electron.Net
+namespace Cake.Electron.Net.Utils
 {
     internal class CommandBuilder : ICommandBuilder
     {

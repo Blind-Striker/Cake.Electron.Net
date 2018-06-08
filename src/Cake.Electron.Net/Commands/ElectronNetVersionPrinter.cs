@@ -2,6 +2,7 @@
 using Cake.Core;
 using Cake.Core.Annotations;
 using Cake.Electron.Net.Commands.Settings;
+using Cake.Electron.Net.Utils;
 
 namespace Cake.Electron.Net.Commands
 {
@@ -12,6 +13,11 @@ namespace Cake.Electron.Net.Commands
         [CakeMethodAlias]
         public static int ElectronNetVersion(this ICakeContext context, ElectronNetVersionSettings settings)
         {
+            if (settings == null)
+            {
+                throw new ArgumentNullException(nameof(settings));
+            }
+
             return ElectronNetVersion(context, settings.WorkingDirectory);
         }
 
@@ -23,7 +29,7 @@ namespace Cake.Electron.Net.Commands
                 throw new ArgumentNullException(nameof(workingDirectory));
             }
 
-            return ElectroCakeContext.ProcessHelper.CmdExecute(CmdBase, workingDirectory);
+            return ElectroCakeContext.Current.ProcessHelper.CmdExecute(CmdBase, workingDirectory);
         }
     }
 }

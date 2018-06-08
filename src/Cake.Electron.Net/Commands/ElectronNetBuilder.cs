@@ -2,6 +2,7 @@
 using Cake.Core;
 using Cake.Core.Annotations;
 using Cake.Electron.Net.Commands.Settings;
+using Cake.Electron.Net.Utils;
 
 namespace Cake.Electron.Net.Commands
 {
@@ -12,6 +13,11 @@ namespace Cake.Electron.Net.Commands
         [CakeMethodAlias]
         public static int ElectronNetBuild(this ICakeContext context, ElectronNetBuildSettings settings)
         {
+            if (settings == null)
+            {
+                throw new ArgumentNullException(nameof(settings));
+            }
+
             return ElectronNetBuild(context, 
                 settings.WorkingDirectory,
                 settings.ElectronTarget, 
@@ -47,18 +53,23 @@ namespace Cake.Electron.Net.Commands
 
             if (electronParams != null && electronParams.Length > 0)
             {
-                string switchs = ElectroCakeContext.CommandBuilder.SwitchHelper(electronTarget);
+                string switchs = ElectroCakeContext.Current.CommandBuilder.SwitchHelper(electronParams);
 
                 cmd = $"{cmd} /electron-params \"{switchs}\"";
             }
 
-            return ElectroCakeContext.ProcessHelper.CmdExecute(cmd, workingDirectory);
+            return ElectroCakeContext.Current.ProcessHelper.CmdExecute(cmd, workingDirectory);
         }
 
         [CakeMethodAlias]
-        public static int ElectronNetBuild(this ICakeContext context, ElectronNetCustomBuildSettings settings)
+        public static int ElectronNetBuildCustom(this ICakeContext context, ElectronNetCustomBuildSettings settings)
         {
-            return ElectronNetBuild(context, 
+            if (settings == null)
+            {
+                throw new ArgumentNullException(nameof(settings));
+            }
+
+            return ElectronNetBuildCustom(context, 
                 settings.WorkingDirectory, 
                 settings.ElectronTargetCustom,
                 settings.ElectronArch, 
@@ -67,13 +78,13 @@ namespace Cake.Electron.Net.Commands
         }
 
         [CakeMethodAlias]
-        public static int ElectronNetBuild(this ICakeContext context, string workingDirectory, ElectronTargetCustom electronTarget, string electronArch, DotNetConfig dotNetConfig = DotNetConfig.Release, params string[] electronParams)
+        public static int ElectronNetBuildCustom(this ICakeContext context, string workingDirectory, ElectronTargetCustom electronTarget, string electronArch, DotNetConfig dotNetConfig = DotNetConfig.Release, params string[] electronParams)
         {
-            return ElectronNetBuild(context, workingDirectory, electronTarget.Value, electronArch, dotNetConfig.ToString(), electronParams);
+            return ElectronNetBuildCustom(context, workingDirectory, electronTarget.Value, electronArch, dotNetConfig.ToString(), electronParams);
         }
 
         [CakeMethodAlias]
-        public static int ElectronNetBuild(this ICakeContext context, string workingDirectory, string electronTarget, string electronArch, string dotNetConfig = "Release", params string[] electronParams)
+        public static int ElectronNetBuildCustom(this ICakeContext context, string workingDirectory, string electronTarget, string electronArch, string dotNetConfig = "Release", params string[] electronParams)
         {
             if (workingDirectory == null)
             {
@@ -99,12 +110,12 @@ namespace Cake.Electron.Net.Commands
 
             if (electronParams != null && electronParams.Length > 0)
             {
-                string switchs = ElectroCakeContext.CommandBuilder.SwitchHelper(electronTarget);
+                string switchs = ElectroCakeContext.Current.CommandBuilder.SwitchHelper(electronParams);
 
                 cmd = $"{cmd} /electron-params \"{switchs}\"";
             }
 
-            return ElectroCakeContext.ProcessHelper.CmdExecute(cmd, workingDirectory);
+            return ElectroCakeContext.Current.ProcessHelper.CmdExecute(cmd, workingDirectory);
         }
     }
 }

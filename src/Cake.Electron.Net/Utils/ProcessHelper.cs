@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Cake.Electron.Net.Contracts;
 
-namespace Cake.Electron.Net
+namespace Cake.Electron.Net.Utils
 {
     internal class ProcessHelper : IProcessHelper
     {

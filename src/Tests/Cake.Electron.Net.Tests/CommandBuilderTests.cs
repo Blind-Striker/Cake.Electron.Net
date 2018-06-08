@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Cake.Electron.Net.Utils;
 using Xunit;
 
 namespace Cake.Electron.Net.Tests
