@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net46</TargetFrameworks>
+
+    <Authors>Deniz İrgin</Authors>
+    <Description>Cake AddIn that extends Cake with Electron.NET</Description>
+    <PackageProjectUrl>https://github.com/Blind-Striker/Cake.Electron.Net</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/Blind-Striker/Cake.Electron.Net/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/cake-contrib/graphics/a5cf0f881c390650144b2243ae551d5b9f836196/png/cake-contrib-medium.png</PackageIconUrl>
+    <PackageTags>cake, cake-build, cake-contrib, electron, electron-net</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Cake.Core" Version="0.27.2" />
+  </ItemGroup>
+
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
+    <DefineConstants>$(DefineConstants);NETSTANDARD</DefineConstants>
+  </PropertyGroup>
+
+</Project>
