@@ -46,7 +46,7 @@ Task("Test")
         else
         {
             StartProcess("nuget", new ProcessSettings {
-                Arguments = "install xunit.runner.console -OutputDirectory testrunner"
+                Arguments = "install xunit.runner.console -Version 2.4.0-beta.2.build4010 -OutputDirectory testrunner"
             });
 
             StartProcess("mono", new ProcessSettings {
