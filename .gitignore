@@ -38,5 +38,6 @@ msbuild.wrn
 [Tt]ools/*
 ![Tt]ools/Cake/
 ![Tt]ools/tools.csproj
+![Tt]ools/xunit.runner.console/
 
 

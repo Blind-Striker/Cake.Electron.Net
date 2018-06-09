@@ -45,12 +45,8 @@ Task("Test")
         }
         else
         {
-            StartProcess("nuget", new ProcessSettings {
-                Arguments = "install xunit.runner.console -Version \"2.4.0-beta.2.build4010\" -OutputDirectory testrunner"
-            });
-
             StartProcess("mono", new ProcessSettings {
-                Arguments = $"./testrunner/xunit.runner.console.*/tools/{fullFrameworkTarget}/xunit.console.exe ./src/Tests/Cake.Electron.Net.Tests/Cake.Electron.Net.Tests/bin/Release/{fullFrameworkTarget}/Cake.Electron.Net.Tests.dll"
+                Arguments = $"./tools/xunit.runner.console/{fullFrameworkTarget}/xunit.console.exe ./src/Tests/Cake.Electron.Net.Tests/bin/Release/{fullFrameworkTarget}/Cake.Electron.Net.Tests.dll"
             });
         }
 
