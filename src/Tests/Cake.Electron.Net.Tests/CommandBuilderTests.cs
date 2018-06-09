@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Cake.Electron.Net.Utils;
+﻿using Cake.Electron.Net.Utils;
 using Xunit;
 
 namespace Cake.Electron.Net.Tests
@@ -25,7 +20,7 @@ namespace Cake.Electron.Net.Tests
         {
             CommandBuilder commandBuilder = new CommandBuilder();
 
-            string[] args = {"foo=bar", "command=conquer"};
+            string[] args = { "foo=bar", "command=conquer" };
 
             string cmd = commandBuilder.SwitchHelper(args);
 

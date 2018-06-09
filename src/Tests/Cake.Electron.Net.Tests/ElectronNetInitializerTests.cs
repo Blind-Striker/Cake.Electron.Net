@@ -1,11 +1,11 @@
-﻿using System;
-using Cake.Core;
+﻿using Cake.Core;
 using Cake.Electron.Net.Commands;
 using Cake.Electron.Net.Commands.Settings;
 using Cake.Electron.Net.Contracts;
 using Cake.Electron.Net.Tests.Mocks;
 using Cake.Electron.Net.Utils;
 using Moq;
+using System;
 using Xunit;
 
 namespace Cake.Electron.Net.Tests

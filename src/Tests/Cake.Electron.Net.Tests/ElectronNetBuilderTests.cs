@@ -1,12 +1,12 @@
-﻿using System;
-using System.Linq;
-using Cake.Core;
+﻿using Cake.Core;
 using Cake.Electron.Net.Commands;
 using Cake.Electron.Net.Commands.Settings;
 using Cake.Electron.Net.Contracts;
 using Cake.Electron.Net.Tests.Mocks;
 using Cake.Electron.Net.Utils;
 using Moq;
+using System;
+using System.Linq;
 using Xunit;
 
 namespace Cake.Electron.Net.Tests
@@ -105,7 +105,7 @@ namespace Cake.Electron.Net.Tests
                 WorkingDirectory = "./SomeDirectory",
                 DotNetConfig = DotNetConfig.Release,
                 ElectronTarget = ElectronTarget.Linux,
-                ElectronParams = new[] {"command=conquer"}
+                ElectronParams = new[] { "command=conquer" }
             };
 
             var expectedCommand = $"{CmdBase} /target {ElectronTarget.Linux.Value} /dotnet-configuration Release /electron-params \"--command=conquer\"";

@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Cake.Electron.Net.Contracts;
+using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using Cake.Electron.Net.Contracts;
 
 namespace Cake.Electron.Net.Utils
 {
@@ -15,7 +15,7 @@ namespace Cake.Electron.Net.Utils
                 var isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
 
                 cmd.StartInfo.FileName = isWindows ? "cmd.exe" : "bash";
-#else 
+#else
                 cmd.StartInfo.FileName = "cmd.exe";
 #endif
                 cmd.StartInfo.RedirectStandardInput = true;
@@ -42,7 +42,6 @@ namespace Cake.Electron.Net.Utils
                         }
 
                         Console.WriteLine(e.Data);
-
                     };
 
                     cmd.ErrorDataReceived += (s, e) =>
@@ -58,7 +57,6 @@ namespace Cake.Electron.Net.Utils
                         }
 
                         Console.WriteLine(e.Data);
-
                     };
                 }
 

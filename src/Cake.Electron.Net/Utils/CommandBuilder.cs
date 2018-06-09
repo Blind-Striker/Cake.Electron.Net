@@ -1,5 +1,5 @@
-﻿using System.Text;
-using Cake.Electron.Net.Contracts;
+﻿using Cake.Electron.Net.Contracts;
+using System.Text;
 
 namespace Cake.Electron.Net.Utils
 {

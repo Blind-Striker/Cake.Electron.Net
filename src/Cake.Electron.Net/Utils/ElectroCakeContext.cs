@@ -1,27 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Cake.Electron.Net.Contracts;
 using System.Threading;
-using Cake.Electron.Net.Contracts;
 
 namespace Cake.Electron.Net.Utils
 {
     public abstract class ElectroCakeContext
     {
-        private static readonly ElectroCakeContext DefaultTimeProviderContext = new DefaultElectroCakeContext();
+        private static readonly ElectroCakeContext DefaultElectroCakeContext = new DefaultElectroCakeContext();
 
         public static ElectroCakeContext Current
         {
             get
             {
-                if (Thread.GetData(Thread.GetNamedDataSlot("ElectroCake")) is ElectroCakeContext timeProviderContext)
+                if (Thread.GetData(Thread.GetNamedDataSlot("ElectroCake")) is ElectroCakeContext electroCakeContext)
                 {
-                    return timeProviderContext;
+                    return electroCakeContext;
                 }
 
-                timeProviderContext = DefaultTimeProviderContext;
-                Thread.SetData(Thread.GetNamedDataSlot("ElectroCake"), timeProviderContext);
-                return timeProviderContext;
+                electroCakeContext = DefaultElectroCakeContext;
+                Thread.SetData(Thread.GetNamedDataSlot("ElectroCake"), electroCakeContext);
+                return electroCakeContext;
             }
             set => Thread.SetData(Thread.GetNamedDataSlot("ElectroCake"), value);
         }

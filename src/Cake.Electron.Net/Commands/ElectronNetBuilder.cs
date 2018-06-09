@@ -1,8 +1,8 @@
-﻿using System;
-using Cake.Core;
+﻿using Cake.Core;
 using Cake.Core.Annotations;
 using Cake.Electron.Net.Commands.Settings;
 using Cake.Electron.Net.Utils;
+using System;
 
 namespace Cake.Electron.Net.Commands
 {
@@ -18,9 +18,9 @@ namespace Cake.Electron.Net.Commands
                 throw new ArgumentNullException(nameof(settings));
             }
 
-            return ElectronNetBuild(context, 
+            return ElectronNetBuild(context,
                 settings.WorkingDirectory,
-                settings.ElectronTarget, 
+                settings.ElectronTarget,
                 settings.DotNetConfig,
                 settings.ElectronParams);
         }
@@ -69,11 +69,11 @@ namespace Cake.Electron.Net.Commands
                 throw new ArgumentNullException(nameof(settings));
             }
 
-            return ElectronNetBuildCustom(context, 
-                settings.WorkingDirectory, 
+            return ElectronNetBuildCustom(context,
+                settings.WorkingDirectory,
                 settings.ElectronTargetCustom,
-                settings.ElectronArch, 
-                settings.DotNetConfig, 
+                settings.ElectronArch,
+                settings.DotNetConfig,
                 settings.ElectronParams);
         }
 
