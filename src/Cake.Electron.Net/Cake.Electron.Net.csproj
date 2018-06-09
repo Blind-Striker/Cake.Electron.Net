@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net46</TargetFrameworks>
 
+    <Title>Cake.Electron.Net</Title>
     <Authors>Deniz İrgin</Authors>
     <Description>Cake AddIn that extends Cake with Electron.NET</Description>
     <PackageProjectUrl>https://github.com/Blind-Striker/Cake.Electron.Net</PackageProjectUrl>

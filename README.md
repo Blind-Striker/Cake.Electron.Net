@@ -2,8 +2,11 @@
 
 A Cake AddIn that extends Cake with [Electron.NET](https://github.com/ElectronNET/Electron.NET) command tools.
 
+[![cakebuild.net](https://img.shields.io/badge/WWW-cakebuild.net-blue.svg)](http://cakebuild.net/)
+[![NuGet](https://img.shields.io/nuget/v/Cake.Electron.Net.svg)](https://www.nuget.org/packages/Cake.Electron.Net)
+
 ## Builds status
-|       | Linux | OS X |
+|       | Linux | Windows |
 |-------|-------|----------|
 | Build | [![Build Status](https://travis-ci-job-status.herokuapp.com/badge/armutcom/Nancy.Serialization.Hyperion/master/linux)](https://travis-ci.org/armutcom/Nancy.Serialization.Hyperion)      | [![Build status](https://ci.appveyor.com/api/projects/status/p3aa0e87s5r2ihom/branch/master?svg=true)](https://ci.appveyor.com/project/Blind-Striker/cake-electron-net/branch/master)      |
 
@@ -24,7 +27,7 @@ Including addin in cake script is easy.
 ```
 
 ## Usage
-Please [Electron.NET](https://github.com/ElectronNET/Electron.NET) for commands usages.
+Please see [Electron.NET](https://github.com/ElectronNET/Electron.NET) for commands usages.
 
 ### Commands supported
 * ElectronNetBuild
