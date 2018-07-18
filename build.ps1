@@ -61,7 +61,6 @@ $CAKE_VERSION="0.27.2"
 
 $TOOLS_DIR = Join-Path $PSScriptRoot "tools"
 $CAKE_EXE = Join-Path $TOOLS_DIR "/Cake.CoreCLR.$CAKE_VERSION/cake.coreclr/$CAKE_VERSION/Cake.dll"
-$NUGET_URL = "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe"
 
 # Make sure tools folder exists
 if ((Test-Path $PSScriptRoot) -and !(Test-Path $TOOLS_DIR)) {

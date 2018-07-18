@@ -19,13 +19,11 @@ Task("Compile")
             Arguments = "--info"
         });
 
-        StartProcess("dotnet", new ProcessSettings {
-            Arguments = "restore ./src/Cake.Electron.Net.sln"
-        });
+        DotNetCoreBuildSettings settings = new DotNetCoreBuildSettings();
+        settings.Configuration = configuration;
 
-        StartProcess("dotnet", new ProcessSettings {
-            Arguments = $"build ./src/Tests/Cake.Electron.Net.Tests/Cake.Electron.Net.Tests.csproj -c {configuration}"
-        });
+        DotNetCoreRestore("./src/Cake.Electron.Net.sln");
+        DotNetCoreBuild($"./src/Tests/Cake.Electron.Net.Tests/Cake.Electron.Net.Tests.csproj", settings);
     });
 
 Task("Test")
@@ -34,27 +32,30 @@ Task("Test")
     .Does(() =>
     {
         string appveyor = IsRunningOnUnix() ? string.Empty : " --test-adapter-path:. --logger:Appveyor";
+        string testProjectPath = "./src/Tests/Cake.Electron.Net.Tests/Cake.Electron.Net.Tests.csproj";
 
-         Information($"Running {fullFrameworkTarget.ToUpper()} Tests");
+        DotNetCoreTestSettings settings = new DotNetCoreTestSettings();
+        settings.Configuration = configuration;
+        settings.Framework = netCoreTarget;
+        settings.ArgumentCustomization  = args => args.Append(appveyor);
 
-        if(!IsRunningOnUnix())
+        Information($"Running {netCoreTarget.ToUpper()} Tests");
+
+        DotNetCoreTest(testProjectPath, settings);
+
+        Information($"Running {fullFrameworkTarget.ToUpper()} Tests");
+        
+        if(!IsRunningOnUnix()) //Appveyor
         {
-            StartProcess("dotnet", new ProcessSettings {
-                Arguments = $"test ./src/Tests/Cake.Electron.Net.Tests/Cake.Electron.Net.Tests.csproj -c {configuration} -f {fullFrameworkTarget}{appveyor}"
-            });
+            settings.Framework = fullFrameworkTarget;
+            DotNetCoreTest(testProjectPath, settings);
         }
-        else
+        else // Travis
         {
             StartProcess("mono", new ProcessSettings {
                 Arguments = $"./tools/xunit.runner.console/{fullFrameworkTarget}/xunit.console.exe ./src/Tests/Cake.Electron.Net.Tests/bin/Release/{fullFrameworkTarget}/Cake.Electron.Net.Tests.dll"
             });
         }
-
-        Information($"Running {netCoreTarget.ToUpper()} Tests");
-
-        StartProcess("dotnet", new ProcessSettings {
-            Arguments = $"test ./src/Tests/Cake.Electron.Net.Tests/Cake.Electron.Net.Tests.csproj -c {configuration} -f {netCoreTarget}{appveyor}"
-        });
     });
 
 Task("Init")

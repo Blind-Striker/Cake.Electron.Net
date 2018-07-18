@@ -14,7 +14,5 @@ branches:
     - /.*/
 before_script:
 - chmod +x ./build.sh
-before_install:
-  - sudo apt install nuget
 script:  
   - ./build.sh
