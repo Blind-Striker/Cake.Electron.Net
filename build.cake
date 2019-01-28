@@ -1,69 +1,206 @@
 var target = Argument("target", "Default");
+var configuration = Argument("config", "Release");
 
 using System;
 using System.Diagnostics;
 
 // Variables
-var configuration = "Release";
-var fullFrameworkTarget = "net46";
-var netCoreTarget = "netcoreapp2.0";
+var artifactOutput = "./artifacts";
+string projectPath = "./src/Cake.Electron.Net/Cake.Electron.Net.csproj";
+
 
 Task("Default")
-    .IsDependentOn("Test");
+    .IsDependentOn("init")
+    .IsDependentOn("tests");
 
-Task("Compile")
-    .Description("Builds all the projects in the solution")
+Task("init")
+    .Description("Initialize task prerequisites")
     .Does(() =>
     {
         StartProcess("dotnet", new ProcessSettings {
             Arguments = "--info"
         });
 
-        DotNetCoreBuildSettings settings = new DotNetCoreBuildSettings();
-        settings.Configuration = configuration;
+        if(IsRunningOnUnix())
+        {
+            StartProcess("git", new ProcessSettings {
+                Arguments = "config --global core.autocrlf true"
+            });
 
-        DotNetCoreRestore("./src/Cake.Electron.Net.sln");
-        DotNetCoreBuild($"./src/Tests/Cake.Electron.Net.Tests/Cake.Electron.Net.Tests.csproj", settings);
+            StartProcess("mono", new ProcessSettings {
+                Arguments = "--info"
+            });
+
+            InstallXUnitNugetPackage();
+        }      
     });
 
-Task("Test")
-    .Description("Run Tests")
-    .IsDependentOn("Compile")
+Task("compile")
+    .Description("Builds all the projects in the solution")
     .Does(() =>
     {
-        string appveyor = IsRunningOnUnix() ? string.Empty : " --test-adapter-path:. --logger:Appveyor";
-        string testProjectPath = "./src/Tests/Cake.Electron.Net.Tests/Cake.Electron.Net.Tests.csproj";
+        string slnPath = "./src/Cake.Electron.Net.sln";
 
-        DotNetCoreTestSettings settings = new DotNetCoreTestSettings();
+        DotNetCoreBuildSettings settings = new DotNetCoreBuildSettings();
         settings.Configuration = configuration;
-        settings.Framework = netCoreTarget;
-        settings.ArgumentCustomization  = args => args.Append(appveyor);
+        DotNetCoreBuild(slnPath, settings);
+    });
 
-        Information($"Running {netCoreTarget.ToUpper()} Tests");
+Task("tests")
+    .Description("Run Tests")
+    .IsDependentOn("compile")
+    .Does(() =>
+    {      
+        DotNetCoreTestSettings settings = new DotNetCoreTestSettings();
+        settings.NoRestore = true;
+        settings.NoBuild = true;
+        settings.Configuration = configuration;
 
-        DotNetCoreTest(testProjectPath, settings);
+        IList<TestProjMetadata> testProjMetadatas = GetProjMetadatas();
 
-        Information($"Running {fullFrameworkTarget.ToUpper()} Tests");
-        
-        if(!IsRunningOnUnix()) //Appveyor
+        foreach (var testProj in testProjMetadatas)
         {
-            settings.Framework = fullFrameworkTarget;
-            DotNetCoreTest(testProjectPath, settings);
-        }
-        else // Travis
-        {
-            StartProcess("mono", new ProcessSettings {
-                Arguments = $"./tools/xunit.runner.console/{fullFrameworkTarget}/xunit.console.exe ./src/Tests/Cake.Electron.Net.Tests/bin/Release/{fullFrameworkTarget}/Cake.Electron.Net.Tests.dll"
-            });
+           string testProjectPath = testProj.CsProjPath;
+
+           Warning($"Target Frameworks {string.Join(" ",testProj.TargetFrameworks)}");
+
+           foreach(string targetFramework in testProj.TargetFrameworks)
+           {
+                Warning($"Running {targetFramework.ToUpper()} tests for {testProj.AssemblyName}");
+                settings.Framework = targetFramework;
+
+                if(IsRunningOnUnix() && targetFramework == "net461")
+                {
+                    RunXunitUsingMono(targetFramework, $"{testProj.DirectoryPath}/bin/{configuration}/{targetFramework}/{testProj.AssemblyName}.dll");
+                }
+                else
+                {
+                    DotNetCoreTest(testProjectPath, settings);
+                }
+           }
         }
     });
 
-Task("Init")
-    .Description("Initialization")
-    .Does(() => {
-        StartProcess("git", new ProcessSettings {
-            Arguments = "config --global core.autocrlf true"
-        });
+Task("nuget-pack")
+    .Does(() =>
+    {
+        string outputDirectory = MakeAbsolute(Directory(artifactOutput)).FullPath;
+        string projectFullPath = MakeAbsolute(File(projectPath)).FullPath;
+
+        if(!System.IO.Directory.Exists(outputDirectory))
+        {
+            System.IO.Directory.CreateDirectory(outputDirectory);
+        }
+
+        var settings = new DotNetCorePackSettings();
+        settings.Configuration = configuration;
+        settings.OutputDirectory = artifactOutput;
+        DotNetCorePack(projectFullPath, settings);
     });
 
 RunTarget(target);
+
+/*
+/ HELPER METHODS
+*/
+private void InstallXUnitNugetPackage()
+{
+    NuGetInstallSettings nugetInstallSettings = new NuGetInstallSettings();
+    nugetInstallSettings.Version = "2.4.0";
+    nugetInstallSettings.Verbosity = NuGetVerbosity.Normal;
+    nugetInstallSettings.OutputDirectory = "testrunner";            
+    nugetInstallSettings.WorkingDirectory = ".";
+
+    NuGetInstall("xunit.runner.console", nugetInstallSettings);
+}
+
+private void RunXunitUsingMono(string targetFramework, string assemblyPath)
+{
+    int exitCode = StartProcess("mono", new ProcessSettings {
+        Arguments = $"./testrunner/xunit.runner.console.2.4.0/tools/{targetFramework}/xunit.console.exe {assemblyPath}"
+    });
+
+    if(exitCode != 0)
+    {
+        throw new InvalidOperationException($"Exit code: {exitCode}");
+    }
+}
+
+private IList<TestProjMetadata> GetProjMetadatas()
+{
+    var testsRoot = MakeAbsolute(Directory("./src/Tests/"));
+    var csProjs = GetFiles($"{testsRoot}/**/*.csproj").Where(fp => fp.FullPath.EndsWith("Tests.csproj")).ToList();
+
+    IList<TestProjMetadata> testProjMetadatas = new List<TestProjMetadata>();
+
+    foreach (var csProj in csProjs)
+    {
+        string csProjPath = csProj.FullPath;
+
+        string[] targetFrameworks = GetProjectTargetFrameworks(csProjPath);
+        string directoryPath = csProj.GetDirectory().FullPath;
+        string assemblyName = GetAssemblyName(csProjPath);
+
+        var testProjMetadata = new TestProjMetadata(directoryPath, csProjPath, targetFrameworks, assemblyName);
+        testProjMetadatas.Add(testProjMetadata);
+    }
+
+    return testProjMetadatas;
+}
+
+private string[] GetProjectTargetFrameworks(string csprojPath)
+{
+    var file =  MakeAbsolute(File(csprojPath));
+    var project = System.IO.File.ReadAllText(file.FullPath, Encoding.UTF8);
+
+    bool multipleFrameworks = project.Contains("<TargetFrameworks>");
+    string startElement = multipleFrameworks ? "<TargetFrameworks>" : "<TargetFramework>";
+    string endElement = multipleFrameworks ? "</TargetFrameworks>" : "</TargetFramework>";
+
+    int startIndex = project.IndexOf(startElement) + startElement.Length;
+    int endIndex = project.IndexOf(endElement, startIndex);
+
+    string targetFrameworks = project.Substring(startIndex, endIndex - startIndex);
+    return targetFrameworks.Split(';');
+}
+
+private string GetAssemblyName(string csprojPath)
+{
+    var file =  MakeAbsolute(File(csprojPath));
+    var project = System.IO.File.ReadAllText(file.FullPath, Encoding.UTF8);
+    
+    bool assemblyNameElementExists = project.Contains("<AssemblyName>");
+
+    string assemblyName = string.Empty;
+
+    if(assemblyNameElementExists)
+    {
+        int startIndex = project.IndexOf("<AssemblyName>") + "<AssemblyName>".Length;
+        int endIndex = project.IndexOf("</AssemblyName>", startIndex);
+
+        assemblyName = project.Substring(startIndex, endIndex - startIndex);
+    }
+    else
+    {        
+        int startIndex = csprojPath.LastIndexOf("/") + 1;
+        int endIndex = csprojPath.IndexOf(".csproj", startIndex);
+
+        assemblyName = csprojPath.Substring(startIndex, endIndex - startIndex);
+    }
+
+    return assemblyName;
+}
+
+/*
+/ MODELS
+*/
+public class TestProjMetadata
+{
+   public TestProjMetadata(string directoryPath, string csProjPath, string[] targetFrameworks, string assemblyName) 
+       => (DirectoryPath, CsProjPath, TargetFrameworks, AssemblyName) = (directoryPath, csProjPath, targetFrameworks, assemblyName);
+
+   public string DirectoryPath { get; }
+   public string CsProjPath { get; }
+   public string AssemblyName { get; set; }
+   public string[] TargetFrameworks { get; }
+}

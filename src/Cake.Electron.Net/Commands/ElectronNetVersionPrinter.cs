@@ -8,7 +8,7 @@ namespace Cake.Electron.Net.Commands
 {
     public static class ElectronNetVersionPrinter
     {
-        private const string CmdBase = "dotnet electronize version";
+        private const string CmdBase = "electronize version";
 
         [CakeMethodAlias]
         public static int ElectronNetVersion(this ICakeContext context, ElectronNetVersionSettings settings)
@@ -29,7 +29,7 @@ namespace Cake.Electron.Net.Commands
                 throw new ArgumentNullException(nameof(workingDirectory));
             }
 
-            return ElectroCakeContext.Current.ProcessHelper.CmdExecute(CmdBase, workingDirectory);
+            return ElectronCakeContext.Current.ProcessHelper.CmdExecute(CmdBase, workingDirectory);
         }
     }
 }

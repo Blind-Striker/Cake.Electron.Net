@@ -12,7 +12,7 @@ namespace Cake.Electron.Net.Tests
 {
     public class ElectronNetStarterTests
     {
-        private const string CmdBase = "dotnet electronize start";
+        private const string CmdBase = "electronize start";
 
         private readonly Mock<ICakeContext> _cakeContextMock;
 
@@ -37,7 +37,7 @@ namespace Cake.Electron.Net.Tests
             string workingDirectory = "./SomeDirectory";
 
             var processHelperMock = new Mock<IProcessHelper>(MockBehavior.Strict);
-            ElectroCakeContext.Current = new TestElectroCakeContext(processHelperMock, null);
+            ElectronCakeContext.Current = new TestCakeContext(processHelperMock, null);
 
             processHelperMock.Setup(helper => helper.CmdExecute(It.Is<string>(s => s == CmdBase), It.Is<string>(s => s == workingDirectory), It.IsAny<bool>(), It.IsAny<bool>())).Returns(1);
 
@@ -55,7 +55,7 @@ namespace Cake.Electron.Net.Tests
             string path = "./OtherPath";
 
             var processHelperMock = new Mock<IProcessHelper>(MockBehavior.Strict);
-            ElectroCakeContext.Current = new TestElectroCakeContext(processHelperMock, null);
+            ElectronCakeContext.Current = new TestCakeContext(processHelperMock, null);
 
             processHelperMock.Setup(helper => helper.CmdExecute(It.Is<string>(s => s == $"{CmdBase} {path}"), It.Is<string>(s => s == workingDirectory), It.IsAny<bool>(), It.IsAny<bool>())).Returns(1);
 
@@ -84,7 +84,7 @@ namespace Cake.Electron.Net.Tests
             };
 
             var processHelperMock = new Mock<IProcessHelper>(MockBehavior.Strict);
-            ElectroCakeContext.Current = new TestElectroCakeContext(processHelperMock, null);
+            ElectronCakeContext.Current = new TestCakeContext(processHelperMock, null);
             processHelperMock.Setup(helper => helper.CmdExecute(It.Is<string>(s => s == $"{CmdBase} {electronNetInitSettings.Path}"), It.Is<string>(s => s == electronNetInitSettings.WorkingDirectory), It.IsAny<bool>(), It.IsAny<bool>())).Returns(1);
 
             cakeContext.ElectronNetStart(electronNetInitSettings);

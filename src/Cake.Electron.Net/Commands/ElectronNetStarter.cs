@@ -8,7 +8,7 @@ namespace Cake.Electron.Net.Commands
 {
     public static class ElectronNetStarter
     {
-        private const string CmdBase = "dotnet electronize start";
+        private const string CmdBase = "electronize start";
 
         [CakeMethodAlias]
         public static int ElectronNetStart(this ICakeContext context, ElectronNetStartSettings settings)
@@ -36,7 +36,7 @@ namespace Cake.Electron.Net.Commands
                 cmd = $"{cmd} {path}";
             }
 
-            return ElectroCakeContext.Current.ProcessHelper.CmdExecute(cmd, workingDirectory);
+            return ElectronCakeContext.Current.ProcessHelper.CmdExecute(cmd, workingDirectory);
         }
     }
 }

@@ -47,37 +47,21 @@ Param(
     [switch]$Experimental,
     [switch]$Mono,
     [switch]$SkipToolPackageRestore,
-    [Parameter(Position=0,Mandatory=$false,ValueFromRemainingArguments=$true)]
+    [Parameter(Position = 0, Mandatory = $false, ValueFromRemainingArguments = $true)]
     [string[]]$ScriptArgs
 )
 
 Write-Host "Preparing to run build script..."
 
-if(!$PSScriptRoot){
+if (!$PSScriptRoot) {
     $PSScriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent
 }
 
-$CAKE_VERSION="0.27.2"
+$CAKE_VERSION = "0.29.0"
 
 $TOOLS_DIR = Join-Path $PSScriptRoot "tools"
-$CAKE_EXE = Join-Path $TOOLS_DIR "/Cake.CoreCLR.$CAKE_VERSION/cake.coreclr/$CAKE_VERSION/Cake.dll"
-
-# Make sure tools folder exists
-if ((Test-Path $PSScriptRoot) -and !(Test-Path $TOOLS_DIR)) {
-    Write-Verbose -Message "Creating tools directory..."
-    New-Item -Path $TOOLS_DIR -Type directory | out-null
-}
-
-# Make sure that tools.csproj exist.
-if (!(Test-Path "$TOOLS_DIR/tools.csproj")) {
-    Write-Verbose -Message "Creating tools.csproj..."    
-    try {        
-        New-Item "$TOOLS_DIR/tools.csproj" -ItemType file
-        "<Project Sdk=""Microsoft.NET.Sdk""><PropertyGroup><OutputType>Exe</OutputType><TargetFramework>netcoreapp2.0</TargetFramework></PropertyGroup></Project>" | Out-File -FilePath "$TOOLS_DIR/tools.csproj" -Append
-    } catch {
-        Throw "Could not download packages.config."
-    }
-}
+$CAKE_ROOT = Join-Path $TOOLS_DIR "/cake.coreclr/"
+$CAKE_EXE = Join-Path $CAKE_ROOT "/Cake.dll"
 
 # Make sure that dotnet core installed.
 try {
@@ -87,12 +71,44 @@ catch {
     Throw "Error: dotnet is not installed."
 } 
 
-# Add dependencies
-dotnet add $TOOLS_DIR/tools.csproj package Cake.CoreCLR -v $CAKE_VERSION --package-directory $TOOLS_DIR/Cake.CoreCLR.$CAKE_VERSION
+# Install cake if its not installed
+if (!(Test-Path $CAKE_EXE)) {
+    # Make sure tools folder exists
+    if ((Test-Path $PSScriptRoot) -and !(Test-Path $TOOLS_DIR)) {
+        Write-Verbose -Message "Creating tools directory..."
+        New-Item -Path $TOOLS_DIR -Type directory | out-null
+    }
+
+    # Make sure that tools.csproj exist.
+    if (!(Test-Path "$TOOLS_DIR/tools.csproj")) {
+        Write-Verbose -Message "Creating tools.csproj..."    
+        try {        
+            New-Item "$TOOLS_DIR/tools.csproj" -ItemType file
+            "<Project Sdk=""Microsoft.NET.Sdk""><PropertyGroup><OutputType>Exe</OutputType><TargetFramework>netcoreapp2.0</TargetFramework></PropertyGroup></Project>" | Out-File -FilePath "$TOOLS_DIR/tools.csproj" -Append
+        }
+        catch {
+            Throw "Could not download packages.config."
+        }
+    }
+
+    $CAKE_NFW = Join-Path $TOOLS_DIR "/cake/"
+
+    # Add dependencies
+    dotnet add $TOOLS_DIR/tools.csproj package Cake.CoreCLR -v $CAKE_VERSION --package-directory $TOOLS_DIR
+    # Add Cake.exe for VsCode intellisense support
+    dotnet add $TOOLS_DIR/tools.csproj package Cake -v $CAKE_VERSION --package-directory $TOOLS_DIR
+
+    # Clean up
+    Move-Item -Path $CAKE_ROOT/$CAKE_VERSION/* -Destination $CAKE_ROOT
+    Remove-Item $CAKE_ROOT/$CAKE_VERSION/ -Force -Recurse
+    Move-Item -Path $CAKE_NFW/$CAKE_VERSION/* -Destination $CAKE_NFW
+    Remove-Item $CAKE_NFW/$CAKE_VERSION/ -Force -Recurse
+    Remove-Item $TOOLS_DIR/tools.csproj
+}
 
 # Make sure that Cake has been installed.
 if (!(Test-Path $CAKE_EXE)) {
-    Throw "Could not find Cake.exe at $CAKE_EXE"
+    Throw "Could not find Cake.dll at $CAKE_EXE"
 }
 
 # Build Cake arguments
@@ -108,5 +124,5 @@ $cakeArguments += $ScriptArgs
 
 # Start Cake
 Write-Host "Running build script..."
-&dotnet $TOOLS_DIR/Cake.CoreCLR.$CAKE_VERSION/cake.coreclr/$CAKE_VERSION/Cake.dll $cakeArguments
+&dotnet $TOOLS_DIR/cake.coreclr/Cake.dll $cakeArguments
 exit $LASTEXITCODE
