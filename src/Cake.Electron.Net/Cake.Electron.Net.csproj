@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
@@ -8,7 +8,7 @@
     <Description>Cake AddIn that extends Cake with Electron.NET</Description>
     <PackageProjectUrl>https://github.com/Blind-Striker/Cake.Electron.Net</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageIconUrl>https://raw.githubusercontent.com/cake-contrib/graphics/a5cf0f881c390650144b2243ae551d5b9f836196/png/cake-contrib-medium.png</PackageIconUrl>
+    <PackageIconUrl>https://cdn.jsdelivr.net/gh/cake-contrib/graphics/png/cake-contrib-medium.png</PackageIconUrl>
     <PackageTags>cake, cake-build, cake-contrib, electron, electron-net</PackageTags>
     <Version>0.0.11</Version>
 
