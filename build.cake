@@ -1,11 +1,13 @@
-var target = Argument("target", "Default");
-var configuration = Argument("config", "Release");
-
 using System;
+using System.Text.RegularExpressions;
 using System.Diagnostics;
 
-// Variables
+var target = Argument("target", "default");
+var configuration = Argument("config", "Release");
+var buildNumber = Argument<int>("buildnumber", 1);
+
 var artifactOutput = "./artifacts";
+var testResults = "results.trx";
 string projectPath = "./src/Cake.Electron.Net/Cake.Electron.Net.csproj";
 
 
@@ -39,7 +41,7 @@ Task("compile")
     .Description("Builds all the projects in the solution")
     .Does(() =>
     {
-        string slnPath = "./src/Cake.Electron.Net.sln";
+        string slnPath = "./Cake.Electron.Net.sln";
 
         DotNetCoreBuildSettings settings = new DotNetCoreBuildSettings();
         settings.Configuration = configuration;
@@ -56,7 +58,7 @@ Task("tests")
         settings.NoBuild = true;
         settings.Configuration = configuration;
 
-        IList<TestProjMetadata> testProjMetadatas = GetProjMetadatas();
+        IList<TestProjMetadata> testProjMetadatas = GetProjMetadata();
 
         foreach (var testProj in testProjMetadatas)
         {
@@ -75,6 +77,8 @@ Task("tests")
                 }
                 else
                 {
+                    string testFilePrefix = targetFramework.Replace(".","-");
+                    settings.ArgumentCustomization  = args => args.Append($" --logger \"trx;LogFileName={testFilePrefix}_{testResults}\"");
                     DotNetCoreTest(testProjectPath, settings);
                 }
            }
@@ -95,7 +99,17 @@ Task("nuget-pack")
         var settings = new DotNetCorePackSettings();
         settings.Configuration = configuration;
         settings.OutputDirectory = artifactOutput;
+        settings.MSBuildSettings = new DotNetCoreMSBuildSettings();
+        settings.MSBuildSettings.SetVersion(GetProjectVersion());
+
         DotNetCorePack(projectFullPath, settings);
+    });
+
+Task("get-version")
+    .Description("Get version")
+    .Does(() =>
+    {
+        Warning(GetProjectVersion());
     });
 
 RunTarget(target);
@@ -106,7 +120,7 @@ RunTarget(target);
 private void InstallXUnitNugetPackage()
 {
     NuGetInstallSettings nugetInstallSettings = new NuGetInstallSettings();
-    nugetInstallSettings.Version = "2.4.0";
+    nugetInstallSettings.Version = "2.4.1";
     nugetInstallSettings.Verbosity = NuGetVerbosity.Normal;
     nugetInstallSettings.OutputDirectory = "testrunner";            
     nugetInstallSettings.WorkingDirectory = ".";
@@ -117,7 +131,7 @@ private void InstallXUnitNugetPackage()
 private void RunXunitUsingMono(string targetFramework, string assemblyPath)
 {
     int exitCode = StartProcess("mono", new ProcessSettings {
-        Arguments = $"./testrunner/xunit.runner.console.2.4.0/tools/{targetFramework}/xunit.console.exe {assemblyPath}"
+        Arguments = $"./testrunner/xunit.runner.console.2.4.1/tools/{targetFramework}/xunit.console.exe {assemblyPath}"
     });
 
     if(exitCode != 0)
@@ -126,9 +140,9 @@ private void RunXunitUsingMono(string targetFramework, string assemblyPath)
     }
 }
 
-private IList<TestProjMetadata> GetProjMetadatas()
+private IList<TestProjMetadata> GetProjMetadata()
 {
-    var testsRoot = MakeAbsolute(Directory("./src/Tests/"));
+    var testsRoot = MakeAbsolute(Directory("./tests/"));
     var csProjs = GetFiles($"{testsRoot}/**/*.csproj").Where(fp => fp.FullPath.EndsWith("Tests.csproj")).ToList();
 
     IList<TestProjMetadata> testProjMetadatas = new List<TestProjMetadata>();
@@ -189,6 +203,43 @@ private string GetAssemblyName(string csprojPath)
     }
 
     return assemblyName;
+}
+
+private void UpdateProjectVersion(string version)
+{
+    Information("Setting version to " + version);
+
+    if(string.IsNullOrWhiteSpace(version))
+    {
+        throw new CakeException("No version specified! You need to pass in --targetversion=\"x.y.z\"");
+    }
+
+    var file =  MakeAbsolute(File("./src/Directory.Build.props"));
+
+    Information(file.FullPath);
+
+    var project = System.IO.File.ReadAllText(file.FullPath, Encoding.UTF8);
+
+    var projectVersion = new Regex(@"<Version>.+<\/Version>");
+    project = projectVersion.Replace(project, string.Concat("<Version>", version, "</Version>"));
+
+    System.IO.File.WriteAllText(file.FullPath, project, Encoding.UTF8);
+}
+
+private string GetProjectVersion()
+{
+    var file =  MakeAbsolute(File("./src/Directory.Build.props"));
+
+    Information(file.FullPath);
+
+    var project = System.IO.File.ReadAllText(file.FullPath, Encoding.UTF8);
+    int startIndex = project.IndexOf("<Version>") + "<Version>".Length;
+    int endIndex = project.IndexOf("</Version>", startIndex);
+
+    string version = project.Substring(startIndex, endIndex - startIndex);
+    version = $"{version}.{buildNumber}";
+
+    return version;
 }
 
 /*

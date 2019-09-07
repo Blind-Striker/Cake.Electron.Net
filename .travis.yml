@@ -3,9 +3,8 @@ sudo: required
 dist: xenial  
 env:  
   - CLI_VERSION=latest
-mono:  
-  - 5.18.0
-dotnet:  2.2.103
+mono: latest
+dotnet:  2.2.401
 os:  
   - linux
 branches:  
@@ -13,8 +12,8 @@ branches:
     - master
     - /.*/
 before_script:
-- chmod +x ./build.linux.sh
+- chmod +x ./build.sh
 before_install:
   - sudo apt install nuget
 script:  
-  - ./build.linux.sh
+  - ./build.sh

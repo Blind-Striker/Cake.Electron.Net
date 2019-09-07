@@ -23,17 +23,48 @@ namespace Cake.Electron.Net.Commands
                 settings.WorkingDirectory,
                 settings.ElectronTarget,
                 settings.DotNetConfig,
+                settings.RelativePath,
+                settings.AbsolutePath,
+                settings.PackageJson,
+                settings.InstallModules,
                 settings.ElectronParams);
         }
 
         [CakeMethodAlias]
-        public static int ElectronNetBuild(this ICakeContext context, string workingDirectory, ElectronTarget electronTarget, DotNetConfig? dotNetConfig = null, params string[] electronParams)
+        public static int ElectronNetBuild(
+            this ICakeContext context,
+            string workingDirectory,
+            ElectronTarget electronTarget,
+            DotNetConfig? dotNetConfig = null,
+            string relativePath = null,
+            string absolutePath = null,
+            string packageJson = null,
+            bool installModules = false,
+            params string[] electronParams)
         {
-            return ElectronNetBuild(context, workingDirectory, electronTarget?.Value, dotNetConfig?.ToString(), electronParams);
+            return ElectronNetBuild(
+                context,
+                workingDirectory,
+                electronTarget?.Value,
+                dotNetConfig?.ToString(),
+                relativePath,
+                absolutePath,
+                packageJson,
+                installModules,
+                electronParams);
         }
 
         [CakeMethodAlias]
-        public static int ElectronNetBuild(this ICakeContext context, string workingDirectory, string electronTarget, string dotNetConfig = null, params string[] electronParams)
+        public static int ElectronNetBuild(
+            this ICakeContext context,
+            string workingDirectory,
+            string electronTarget,
+            string dotNetConfig = null,
+            string relativePath = null,
+            string absolutePath = null,
+            string packageJson = null,
+            bool installModules = false,
+            params string[] electronParams)
         {
             if (workingDirectory == null)
             {
@@ -46,7 +77,7 @@ namespace Cake.Electron.Net.Commands
             }
 
 
-            StringBuilder cmdBuilder = new StringBuilder();
+            var cmdBuilder = new StringBuilder();
             cmdBuilder.Append($"{CmdBase} /target {electronTarget}");
 
             if (dotNetConfig != null)
@@ -54,14 +85,34 @@ namespace Cake.Electron.Net.Commands
                 cmdBuilder.Append($" /dotnet-configuration {dotNetConfig}");
             }
 
+            if (relativePath != null)
+            {
+                cmdBuilder.Append($" /relative-path {relativePath}");
+            }
+
+            if (absolutePath != null)
+            {
+                cmdBuilder.Append($" /absolute-path {absolutePath}");
+            }
+
+            if (packageJson != null)
+            {
+                cmdBuilder.Append($" /package-json {packageJson}");
+            }
+
+            if (installModules)
+            {
+                cmdBuilder.Append(" /install-modules");
+            }
+
             if (electronParams == null || electronParams.Length <= 0)
             {
                 return ElectronCakeContext.Current.ProcessHelper.CmdExecute(cmdBuilder.ToString(), workingDirectory);
             }
 
-            var switchs = ElectronCakeContext.Current.CommandBuilder.SwitchHelper(electronParams);
+            string switches = ElectronCakeContext.Current.CommandBuilder.SwitchHelper(electronParams);
 
-            cmdBuilder.Append($" /electron-params \"{switchs}\"");
+            cmdBuilder.Append($" /electron-params \"{switches}\"");
 
             return ElectronCakeContext.Current.ProcessHelper.CmdExecute(cmdBuilder.ToString(), workingDirectory);
         }
@@ -79,17 +130,51 @@ namespace Cake.Electron.Net.Commands
                 settings.ElectronTargetCustom,
                 settings.ElectronArch,
                 settings.DotNetConfig,
+                settings.RelativePath,
+                settings.AbsolutePath,
+                settings.PackageJson,
+                settings.InstallModules,
                 settings.ElectronParams);
         }
 
         [CakeMethodAlias]
-        public static int ElectronNetBuildCustom(this ICakeContext context, string workingDirectory, ElectronTargetCustom electronTarget, string electronArch = null, DotNetConfig? dotNetConfig = null, params string[] electronParams)
+        public static int ElectronNetBuildCustom(
+            this ICakeContext context,
+            string workingDirectory,
+            ElectronTargetCustom electronTarget,
+            string electronArch = null,
+            DotNetConfig? dotNetConfig = null,
+            string relativePath = null,
+            string absolutePath = null,
+            string packageJson = null,
+            bool installModules = false,
+            params string[] electronParams)
         {
-            return ElectronNetBuildCustom(context, workingDirectory, electronTarget?.Value, electronArch, dotNetConfig?.ToString(), electronParams);
+            return ElectronNetBuildCustom(
+                context,
+                workingDirectory,
+                electronTarget?.Value,
+                electronArch,
+                dotNetConfig?.ToString(),
+                relativePath,
+                absolutePath,
+                packageJson,
+                installModules,
+                electronParams);
         }
 
         [CakeMethodAlias]
-        public static int ElectronNetBuildCustom(this ICakeContext context, string workingDirectory, string electronTarget, string electronArch = null, string dotNetConfig = null, params string[] electronParams)
+        public static int ElectronNetBuildCustom(
+            this ICakeContext context,
+            string workingDirectory,
+            string electronTarget,
+            string electronArch = null,
+            string dotNetConfig = null,
+            string relativePath = null,
+            string absolutePath = null,
+            string packageJson = null,
+            bool installModules = false,
+            params string[] electronParams)
         {
             if (workingDirectory == null)
             {
@@ -114,14 +199,34 @@ namespace Cake.Electron.Net.Commands
                 cmdBuilder.Append($" /electron-arch {electronArch}");
             }
 
+            if (relativePath != null)
+            {
+                cmdBuilder.Append($" /relative-path {relativePath}");
+            }
+
+            if (absolutePath != null)
+            {
+                cmdBuilder.Append($" /absolute-path {absolutePath}");
+            }
+
+            if (packageJson != null)
+            {
+                cmdBuilder.Append($" /package-json {packageJson}");
+            }
+
+            if (installModules)
+            {
+                cmdBuilder.Append(" /install-modules");
+            }
+
             if (electronParams == null || electronParams.Length <= 0)
             {
                 return ElectronCakeContext.Current.ProcessHelper.CmdExecute(cmdBuilder.ToString(), workingDirectory);
             }
 
-            var switchs = ElectronCakeContext.Current.CommandBuilder.SwitchHelper(electronParams);
+            string switches = ElectronCakeContext.Current.CommandBuilder.SwitchHelper(electronParams);
 
-            cmdBuilder.Append($" /electron-params \"{switchs}\"");
+            cmdBuilder.Append($" /electron-params \"{switches}\"");
 
             return ElectronCakeContext.Current.ProcessHelper.CmdExecute(cmdBuilder.ToString(), workingDirectory);
         }

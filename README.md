@@ -5,11 +5,15 @@ A Cake AddIn that extends Cake with [Electron.NET](https://github.com/ElectronNE
 [![cakebuild.net](https://img.shields.io/badge/WWW-cakebuild.net-blue.svg)](http://cakebuild.net/)
 [![NuGet](https://img.shields.io/nuget/v/Cake.Electron.Net.svg)](https://www.nuget.org/packages/Cake.Electron.Net)
 
-## Builds status
+## Continuous integration
 
-|       | Linux | Windows |
-|-------|-------|----------|
-| Build | [![Build Status](https://travis-ci-job-status.herokuapp.com/badge/armutcom/Nancy.Serialization.Hyperion/master/linux)](https://travis-ci.org/armutcom/Nancy.Serialization.Hyperion)      | [![Build status](https://ci.appveyor.com/api/projects/status/p3aa0e87s5r2ihom/branch/master?svg=true)](https://ci.appveyor.com/project/Blind-Striker/cake-electron-net/branch/master)      |
+| Build server    	| Platform 	| Build status                                                                                                                                                                                                                                                                         	|
+|-----------------	|----------	|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	|
+| Azure Pipelines 	| Ubuntu   	| [![Build Status](https://denizirgindev.visualstudio.com/Cake.Electron.Net/_apis/build/status/Ubuntu?branchName=master)](https://denizirgindev.visualstudio.com/Cake.Electron.Net/_build/latest?definitionId=18&branchName=master)	|
+| Azure Pipelines 	| macOs   	| [![Build Status](https://denizirgindev.visualstudio.com/Cake.Electron.Net/_apis/build/status/MacOs?branchName=master)](https://denizirgindev.visualstudio.com/Cake.Electron.Net/_build/latest?definitionId=19&branchName=master) 	|
+| Azure Pipelines 	| Windows   	| [![Build Status](https://denizirgindev.visualstudio.com/Cake.Electron.Net/_apis/build/status/Windows?branchName=master)](https://denizirgindev.visualstudio.com/Cake.Electron.Net/_build/latest?definitionId=17&branchName=master)	|
+| Travis 	| Ubuntu   	| [![Build Status](https://travis-ci.com/Blind-Striker/Cake.Electron.Net.svg?branch=master)](https://travis-ci.com/Blind-Striker/Cake.Electron.Net)	|
+| Appveyor 	| Windows   	| [![Build status](https://ci.appveyor.com/api/projects/status/p3aa0e87s5r2ihom/branch/master?svg=true)](https://ci.appveyor.com/project/Blind-Striker/cake-electron-net/branch/master)	|
 
 ## Table of Contents
 
