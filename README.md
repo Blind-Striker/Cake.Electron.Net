@@ -3,7 +3,10 @@
 A Cake AddIn that extends Cake with [Electron.NET](https://github.com/ElectronNET/Electron.NET) command tools.
 
 [![cakebuild.net](https://img.shields.io/badge/WWW-cakebuild.net-blue.svg)](http://cakebuild.net/)
-[![NuGet](https://img.shields.io/nuget/v/Cake.Electron.Net.svg)](https://www.nuget.org/packages/Cake.Electron.Net)
+
+| Stable                                                                                                              | Nightly                                                                                                                                                                        |
+|---------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [![NuGet](https://img.shields.io/nuget/v/Cake.Electron.Net.svg)](https://www.nuget.org/packages/Cake.Electron.Net) | [![MyGet](https://img.shields.io/myget/cake-electron-net/v/Cake.Electron.Net.svg?label=myget)](https://www.myget.org/feed/cake-electron-net/package/nuget/Cake.Electron.Net) |
 
 ## Continuous integration
 
