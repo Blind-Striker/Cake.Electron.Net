@@ -52,6 +52,7 @@ Please see [Electron.NET](https://github.com/ElectronNET/Electron.NET) for comma
 ### Commands Supported
 
 * ElectronNetBuild
+* ElectronNetAdd
 * ElectronNetInit
 * ElectronNetStart
 * ElectronNetVersion
