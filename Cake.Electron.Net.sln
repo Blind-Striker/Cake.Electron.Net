@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29009.5
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{BCFAA226-E159-4D1D-90FE-0B18F79A7CBD}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{BCFAA226-E159-4D1D-90FE-0B18F79A7CBD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cake.Electron.Net", "src\Cake.Electron.Net\Cake.Electron.Net.csproj", "{FC252AB6-0BD8-4E2C-B846-BB52F8B698D1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cake.Electron.Net.Tests", "tests\Cake.Electron.Net.Tests\Cake.Electron.Net.Tests.csproj", "{432632D4-BCA3-4925-AC59-1A84930DAB22}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{BC2844A9-6CAA-420C-B49C-54E8B8E39DB0}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{BC2844A9-6CAA-420C-B49C-54E8B8E39DB0}"
 	ProjectSection(SolutionItems) = preProject
 		.travis.yml = .travis.yml
 		appveyor.yml = appveyor.yml
@@ -30,6 +30,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{8F44E6E1-421E-4BE6-9F97-70D104272B9A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +51,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{FC252AB6-0BD8-4E2C-B846-BB52F8B698D1} = {8F44E6E1-421E-4BE6-9F97-70D104272B9A}
 		{432632D4-BCA3-4925-AC59-1A84930DAB22} = {BCFAA226-E159-4D1D-90FE-0B18F79A7CBD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
