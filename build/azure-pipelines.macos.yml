@@ -14,13 +14,19 @@ pr:
 pool:
   name: Hosted macOS
 steps:
-  - bash: "sudo apt install nuget && mkdir ./testrunner && sudo chmod -R 777 ./testrunner && ls"
+  - bash: "sudo curl -o /usr/local/bin/nuget.exe https://dist.nuget.org/win-x86-commandline/latest/nuget.exe && alias nuget="mono /usr/local/bin/nuget.exe" && mkdir ./testrunner && ls"
     displayName: "Init Task"
     
   - task: UseDotNet@2 
     displayName: ".NET Core 3.1.x"
     inputs:
       version: '3.1.x'
+      packageType: sdk
+
+  - task: UseDotNet@2 
+    displayName: ".NET Core 2.1.x"
+    inputs:
+      version: '2.1.x'
       packageType: sdk
 
   - task: Bash@3

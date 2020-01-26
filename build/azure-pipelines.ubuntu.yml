@@ -23,6 +23,12 @@ steps:
       version: '3.1.x'
       packageType: sdk
 
+  - task: UseDotNet@2 
+    displayName: ".NET Core 2.1.x"
+    inputs:
+      version: '2.1.x'
+      packageType: sdk
+
   - task: Bash@3
     displayName: "Compile & Tests"
     inputs:
