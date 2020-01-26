@@ -4,7 +4,9 @@ using Cake.Electron.Net.Commands.Settings;
 using Cake.Electron.Net.Contracts;
 using Cake.Electron.Net.Tests.Mocks;
 using Cake.Electron.Net.Utils;
+
 using Moq;
+
 using System;
 using System.Linq;
 
@@ -41,7 +43,9 @@ namespace Cake.Electron.Net.Tests
             var processHelperMock = new Mock<IProcessHelper>(MockBehavior.Strict);
             ElectronCakeContext.Current = new TestCakeContext(processHelperMock, null);
 
-            processHelperMock.Setup(helper => helper.CmdExecute(It.Is<string>(s => s == CmdBase), It.Is<string>(s => s == workingDirectory), It.IsAny<bool>(), It.IsAny<bool>())).Returns(1);
+            processHelperMock
+                .Setup(helper => helper.CmdExecute(It.Is<string>(s => s == CmdBase), It.Is<string>(s => s == workingDirectory), It.IsAny<bool>(), It.IsAny<bool>()))
+                .Returns(1);
 
             cakeContext.ElectronNetStart(workingDirectory);
 
@@ -61,7 +65,9 @@ namespace Cake.Electron.Net.Tests
             var processHelperMock = new Mock<IProcessHelper>(MockBehavior.Strict);
             ElectronCakeContext.Current = new TestCakeContext(processHelperMock, null);
 
-            processHelperMock.Setup(helper => helper.CmdExecute(It.Is<string>(s => s == expectedCommand), It.Is<string>(s => s == workingDirectory), It.IsAny<bool>(), It.IsAny<bool>())).Returns(1);
+            processHelperMock.Setup(helper => helper.CmdExecute(It.Is<string>(s => s == expectedCommand), It.Is<string>(s => s == workingDirectory), It.IsAny<bool>(),
+                                                                It.IsAny<bool>()))
+                             .Returns(1);
 
             cakeContext.ElectronNetStart(workingDirectory, aspCoreProjectPath);
 
@@ -82,7 +88,9 @@ namespace Cake.Electron.Net.Tests
             var processHelperMock = new Mock<IProcessHelper>(MockBehavior.Strict);
             ElectronCakeContext.Current = new TestCakeContext(processHelperMock, null);
 
-            processHelperMock.Setup(helper => helper.CmdExecute(It.Is<string>(s => s == expectedCommand), It.Is<string>(s => s == workingDirectory), It.IsAny<bool>(), It.IsAny<bool>())).Returns(1);
+            processHelperMock.Setup(helper => helper.CmdExecute(It.Is<string>(s => s == expectedCommand), It.Is<string>(s => s == workingDirectory), It.IsAny<bool>(),
+                                                                It.IsAny<bool>()))
+                             .Returns(1);
 
             cakeContext.ElectronNetStart(workingDirectory, aspCoreProjectPath, manifest);
 
@@ -106,11 +114,12 @@ namespace Cake.Electron.Net.Tests
             var commandBuilderMock = new Mock<ICommandBuilder>(MockBehavior.Strict);
             ElectronCakeContext.Current = new TestCakeContext(processHelperMock, commandBuilderMock);
 
-            commandBuilderMock
-                .Setup(builder => builder.SwitchHelper(It.Is<string[]>(strings => strings.Contains(arg1) && strings.Contains(arg2))))
-                .Returns(() => $"--{arg1} --{arg2}");
+            commandBuilderMock.Setup(builder => builder.SwitchHelper(It.Is<string[]>(strings => strings.Contains(arg1) && strings.Contains(arg2))))
+                              .Returns(() => $"--{arg1} --{arg2}");
 
-            processHelperMock.Setup(helper => helper.CmdExecute(It.Is<string>(s => s == expectedCommand), It.Is<string>(s => s == workingDirectory), It.IsAny<bool>(), It.IsAny<bool>())).Returns(1);
+            processHelperMock.Setup(helper => helper.CmdExecute(It.Is<string>(s => s == expectedCommand), It.Is<string>(s => s == workingDirectory), It.IsAny<bool>(),
+                                                                It.IsAny<bool>()))
+                             .Returns(1);
 
             cakeContext.ElectronNetStart(workingDirectory, aspCoreProjectPath, manifest, arg1, arg2);
 
@@ -143,11 +152,13 @@ namespace Cake.Electron.Net.Tests
             ElectronCakeContext.Current = new TestCakeContext(processHelperMock, commandBuilderMock);
 
             commandBuilderMock
-                .Setup(builder => builder.SwitchHelper(It.Is<string[]>(strings => strings.Contains(electronNetInitSettings.Arguments[0]) && strings.Contains(electronNetInitSettings.Arguments[1]))))
+                .Setup(builder => builder.SwitchHelper(
+                           It.Is<string[]>(strings => strings.Contains(electronNetInitSettings.Arguments[0]) && strings.Contains(electronNetInitSettings.Arguments[1]))))
                 .Returns(() => $"--{electronNetInitSettings.Arguments[0]} --{electronNetInitSettings.Arguments[1]}");
 
             processHelperMock.Setup(helper => helper.CmdExecute(It.Is<string>(s => s == expectedCommand),
-                                                                It.Is<string>(s => s == electronNetInitSettings.WorkingDirectory), It.IsAny<bool>(), It.IsAny<bool>())).Returns(1);
+                                                                It.Is<string>(s => s == electronNetInitSettings.WorkingDirectory), It.IsAny<bool>(), It.IsAny<bool>()))
+                             .Returns(1);
 
             cakeContext.ElectronNetStart(electronNetInitSettings);
 

@@ -40,6 +40,7 @@
     <None Include="LICENSE.txt" Pack="true" PackagePath="">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="../../assets/cake-contrib-medium.png" Pack="true" PackagePath=""/>
   </ItemGroup>
 
   <ItemGroup>

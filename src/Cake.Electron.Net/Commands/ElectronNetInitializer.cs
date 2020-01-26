@@ -2,6 +2,7 @@
 using Cake.Core.Annotations;
 using Cake.Electron.Net.Commands.Settings;
 using Cake.Electron.Net.Utils;
+
 using System;
 using System.Text;
 
@@ -23,11 +24,7 @@ namespace Cake.Electron.Net.Commands
         }
 
         [CakeMethodAlias]
-        public static int ElectronNetInit(
-            this ICakeContext context, 
-            string workingDirectory, 
-            string aspCoreProjectPath = null,
-            string manifest = null)
+        public static int ElectronNetInit(this ICakeContext context, string workingDirectory, string aspCoreProjectPath = null, string manifest = null)
         {
             if (workingDirectory == null)
             {

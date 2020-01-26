@@ -2,6 +2,7 @@
 using Cake.Core.Annotations;
 using Cake.Electron.Net.Commands.Settings;
 using Cake.Electron.Net.Utils;
+
 using System;
 using System.Text;
 
@@ -19,56 +20,23 @@ namespace Cake.Electron.Net.Commands
                 throw new ArgumentNullException(nameof(settings));
             }
 
-            return ElectronNetBuild(context,
-                settings.WorkingDirectory,
-                settings.ElectronTarget,
-                settings.DotNetConfig,
-                settings.RelativePath,
-                settings.AbsolutePath,
-                settings.PackageJson,
-                settings.InstallModules,
-                settings.Manifest,
-                settings.ElectronParams);
+            return ElectronNetBuild(context, settings.WorkingDirectory, settings.ElectronTarget, settings.DotNetConfig, settings.RelativePath, settings.AbsolutePath,
+                                    settings.PackageJson, settings.InstallModules, settings.Manifest, settings.ElectronParams);
         }
 
         [CakeMethodAlias]
-        public static int ElectronNetBuild(
-            this ICakeContext context,
-            string workingDirectory,
-            ElectronTarget electronTarget,
-            DotNetConfig? dotNetConfig = null,
-            string relativePath = null,
-            string absolutePath = null,
-            string packageJson = null,
-            bool installModules = false,
-            string manifest = null,
-            params string[] electronParams)
+        public static int ElectronNetBuild(this ICakeContext context, string workingDirectory, ElectronTarget electronTarget, DotNetConfig? dotNetConfig = null,
+                                           string relativePath = null, string absolutePath = null, string packageJson = null, bool installModules = false,
+                                           string manifest = null, params string[] electronParams)
         {
-            return ElectronNetBuild(
-                context,
-                workingDirectory,
-                electronTarget?.Value,
-                dotNetConfig?.ToString(),
-                relativePath,
-                absolutePath,
-                packageJson,
-                installModules,
-                manifest,
-                electronParams);
+            return ElectronNetBuild(context, workingDirectory, electronTarget?.Value, dotNetConfig?.ToString(), relativePath, absolutePath, packageJson, installModules,
+                                    manifest, electronParams);
         }
 
         [CakeMethodAlias]
-        public static int ElectronNetBuild(
-            this ICakeContext context,
-            string workingDirectory,
-            string electronTarget,
-            string dotNetConfig = null,
-            string relativePath = null,
-            string absolutePath = null,
-            string packageJson = null,
-            bool installModules = false,
-            string manifest = null,
-            params string[] electronParams)
+        public static int ElectronNetBuild(this ICakeContext context, string workingDirectory, string electronTarget, string dotNetConfig = null,
+                                           string relativePath = null, string absolutePath = null, string packageJson = null, bool installModules = false,
+                                           string manifest = null, params string[] electronParams)
         {
             if (workingDirectory == null)
             {
@@ -79,7 +47,7 @@ namespace Cake.Electron.Net.Commands
             {
                 throw new ArgumentNullException(nameof(electronTarget));
             }
-            
+
             var cmdBuilder = new StringBuilder();
             cmdBuilder.Append($"{CmdBase} /target {electronTarget}");
 
@@ -133,60 +101,24 @@ namespace Cake.Electron.Net.Commands
                 throw new ArgumentNullException(nameof(settings));
             }
 
-            return ElectronNetBuildCustom(context,
-                settings.WorkingDirectory,
-                settings.ElectronTargetCustom,
-                settings.ElectronArch,
-                settings.DotNetConfig,
-                settings.RelativePath,
-                settings.AbsolutePath,
-                settings.PackageJson,
-                settings.InstallModules,
-                settings.Manifest,
-                settings.ElectronParams);
+            return ElectronNetBuildCustom(context, settings.WorkingDirectory, settings.ElectronTargetCustom, settings.ElectronArch, settings.DotNetConfig,
+                                          settings.RelativePath, settings.AbsolutePath, settings.PackageJson, settings.InstallModules, settings.Manifest,
+                                          settings.ElectronParams);
         }
 
         [CakeMethodAlias]
-        public static int ElectronNetBuildCustom(
-            this ICakeContext context,
-            string workingDirectory,
-            ElectronTargetCustom electronTarget,
-            string electronArch = null,
-            DotNetConfig? dotNetConfig = null,
-            string relativePath = null,
-            string absolutePath = null,
-            string packageJson = null,
-            bool installModules = false,
-            string manifest = null,
-            params string[] electronParams)
+        public static int ElectronNetBuildCustom(this ICakeContext context, string workingDirectory, ElectronTargetCustom electronTarget, string electronArch = null,
+                                                 DotNetConfig? dotNetConfig = null, string relativePath = null, string absolutePath = null, string packageJson = null,
+                                                 bool installModules = false, string manifest = null, params string[] electronParams)
         {
-            return ElectronNetBuildCustom(
-                context,
-                workingDirectory,
-                electronTarget?.Value,
-                electronArch,
-                dotNetConfig?.ToString(),
-                relativePath,
-                absolutePath,
-                packageJson,
-                installModules,
-                manifest,
-                electronParams);
+            return ElectronNetBuildCustom(context, workingDirectory, electronTarget?.Value, electronArch, dotNetConfig?.ToString(), relativePath, absolutePath,
+                                          packageJson, installModules, manifest, electronParams);
         }
 
         [CakeMethodAlias]
-        public static int ElectronNetBuildCustom(
-            this ICakeContext context,
-            string workingDirectory,
-            string electronTarget,
-            string electronArch = null,
-            string dotNetConfig = null,
-            string relativePath = null,
-            string absolutePath = null,
-            string packageJson = null,
-            bool installModules = false,
-            string manifest = null,
-            params string[] electronParams)
+        public static int ElectronNetBuildCustom(this ICakeContext context, string workingDirectory, string electronTarget, string electronArch = null,
+                                                 string dotNetConfig = null, string relativePath = null, string absolutePath = null, string packageJson = null,
+                                                 bool installModules = false, string manifest = null, params string[] electronParams)
         {
             if (workingDirectory == null)
             {

@@ -1,4 +1,5 @@
 ﻿using Cake.Electron.Net.Utils;
+
 using Xunit;
 
 namespace Cake.Electron.Net.Tests
@@ -8,7 +9,7 @@ namespace Cake.Electron.Net.Tests
         [Fact]
         public void SwitchHelper_Should_Return_Empty_String_If_Args_Is_Null_Or_Empty()
         {
-            CommandBuilder commandBuilder = new CommandBuilder();
+            var commandBuilder = new CommandBuilder();
 
             string cmd = commandBuilder.SwitchHelper(null);
 
@@ -18,9 +19,9 @@ namespace Cake.Electron.Net.Tests
         [Fact]
         public void SwitchHelper_Should_Return_Formatted_String_If_Args_Is_Filled_As_Key_Value()
         {
-            CommandBuilder commandBuilder = new CommandBuilder();
+            var commandBuilder = new CommandBuilder();
 
-            string[] args = { "foo=bar", "command=conquer" };
+            string[] args = {"foo=bar", "command=conquer"};
 
             string cmd = commandBuilder.SwitchHelper(args);
 

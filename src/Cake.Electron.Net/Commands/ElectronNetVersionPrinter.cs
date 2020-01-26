@@ -2,6 +2,7 @@
 using Cake.Core.Annotations;
 using Cake.Electron.Net.Commands.Settings;
 using Cake.Electron.Net.Utils;
+
 using System;
 
 namespace Cake.Electron.Net.Commands

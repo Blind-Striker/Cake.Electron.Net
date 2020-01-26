@@ -1,4 +1,5 @@
 ﻿using Cake.Electron.Net.Contracts;
+
 using System.Threading;
 
 namespace Cake.Electron.Net.Utils
@@ -18,6 +19,7 @@ namespace Cake.Electron.Net.Utils
 
                 electronCakeContext = DefaultCakeContext;
                 Thread.SetData(Thread.GetNamedDataSlot("ElectroCake"), electronCakeContext);
+
                 return electronCakeContext;
             }
             set => Thread.SetData(Thread.GetNamedDataSlot("ElectroCake"), value);

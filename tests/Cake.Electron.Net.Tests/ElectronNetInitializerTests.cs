@@ -4,8 +4,11 @@ using Cake.Electron.Net.Commands.Settings;
 using Cake.Electron.Net.Contracts;
 using Cake.Electron.Net.Tests.Mocks;
 using Cake.Electron.Net.Utils;
+
 using Moq;
+
 using System;
+
 using Xunit;
 
 namespace Cake.Electron.Net.Tests
@@ -34,12 +37,14 @@ namespace Cake.Electron.Net.Tests
         {
             ICakeContext cakeContext = _cakeContextMock.Object;
 
-            string workingDirectory = "./SomeDirectory";
+            var workingDirectory = "./SomeDirectory";
 
             var processHelperMock = new Mock<IProcessHelper>(MockBehavior.Strict);
             ElectronCakeContext.Current = new TestCakeContext(processHelperMock, null);
 
-            processHelperMock.Setup(helper => helper.CmdExecute(It.Is<string>(s => s == CmdBase), It.Is<string>(s => s == workingDirectory), It.IsAny<bool>(), It.IsAny<bool>())).Returns(1);
+            processHelperMock
+                .Setup(helper => helper.CmdExecute(It.Is<string>(s => s == CmdBase), It.Is<string>(s => s == workingDirectory), It.IsAny<bool>(), It.IsAny<bool>()))
+                .Returns(1);
 
             cakeContext.ElectronNetInit(workingDirectory);
 
@@ -51,14 +56,16 @@ namespace Cake.Electron.Net.Tests
         {
             ICakeContext cakeContext = _cakeContextMock.Object;
 
-            string workingDirectory = "./SomeDirectory";
-            string aspCoreProjectPath = "./OtherPath";
+            var workingDirectory = "./SomeDirectory";
+            var aspCoreProjectPath = "./OtherPath";
 
             string expectedCommand = $"{CmdBase} /project-path {aspCoreProjectPath}";
 
             var processHelperMock = new Mock<IProcessHelper>(MockBehavior.Strict);
             ElectronCakeContext.Current = new TestCakeContext(processHelperMock, null);
-            processHelperMock.Setup(helper => helper.CmdExecute(It.Is<string>(s => s == expectedCommand), It.Is<string>(s => s == workingDirectory), It.IsAny<bool>(), It.IsAny<bool>())).Returns(1);
+            processHelperMock.Setup(helper => helper.CmdExecute(It.Is<string>(s => s == expectedCommand), It.Is<string>(s => s == workingDirectory), It.IsAny<bool>(),
+                                                                It.IsAny<bool>()))
+                             .Returns(1);
 
             cakeContext.ElectronNetInit(workingDirectory, aspCoreProjectPath);
 
@@ -78,7 +85,9 @@ namespace Cake.Electron.Net.Tests
 
             var processHelperMock = new Mock<IProcessHelper>(MockBehavior.Strict);
             ElectronCakeContext.Current = new TestCakeContext(processHelperMock, null);
-            processHelperMock.Setup(helper => helper.CmdExecute(It.Is<string>(s => s == expectedCommand), It.Is<string>(s => s == workingDirectory), It.IsAny<bool>(), It.IsAny<bool>())).Returns(1);
+            processHelperMock.Setup(helper => helper.CmdExecute(It.Is<string>(s => s == expectedCommand), It.Is<string>(s => s == workingDirectory), It.IsAny<bool>(),
+                                                                It.IsAny<bool>()))
+                             .Returns(1);
 
             cakeContext.ElectronNetInit(workingDirectory, aspCoreProjectPath, manifest);
 
@@ -98,16 +107,15 @@ namespace Cake.Electron.Net.Tests
         {
             ICakeContext cakeContext = _cakeContextMock.Object;
 
-            var electronNetInitSettings = new ElectronNetInitSettings()
-            {
-                WorkingDirectory = "./SomeDirectory",
-                AspCoreProjectPath = "./OtherPath",
-                Manifest = "test"
-            };
+            var electronNetInitSettings = new ElectronNetInitSettings() {WorkingDirectory = "./SomeDirectory", AspCoreProjectPath = "./OtherPath", Manifest = "test"};
 
             var processHelperMock = new Mock<IProcessHelper>(MockBehavior.Strict);
             ElectronCakeContext.Current = new TestCakeContext(processHelperMock, null);
-            processHelperMock.Setup(helper => helper.CmdExecute(It.Is<string>(s => s == $"{CmdBase} /project-path {electronNetInitSettings.AspCoreProjectPath} /manifest {electronNetInitSettings.Manifest}"), It.Is<string>(s => s == electronNetInitSettings.WorkingDirectory), It.IsAny<bool>(), It.IsAny<bool>())).Returns(1);
+            processHelperMock
+                .Setup(helper => helper.CmdExecute(
+                           It.Is<string>(s => s == $"{CmdBase} /project-path {electronNetInitSettings.AspCoreProjectPath} /manifest {electronNetInitSettings.Manifest}"),
+                           It.Is<string>(s => s == electronNetInitSettings.WorkingDirectory), It.IsAny<bool>(), It.IsAny<bool>()))
+                .Returns(1);
 
             cakeContext.ElectronNetInit(electronNetInitSettings);
 

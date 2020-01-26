@@ -2,7 +2,7 @@
 
 namespace Cake.Electron.Net.Commands.Settings
 {
-    public class ElectronNetInitSettings :  IElectronNetInitSettings
+    public class ElectronNetInitSettings : IElectronNetInitSettings
     {
         public string AspCoreProjectPath { get; set; }
 
