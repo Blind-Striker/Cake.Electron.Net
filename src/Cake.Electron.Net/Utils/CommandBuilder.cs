@@ -14,7 +14,7 @@ namespace Cake.Electron.Net.Utils
 
             var sb = new StringBuilder();
 
-            foreach (var s in args)
+            foreach (string s in args)
             {
                 sb.Append($" --{s}");
             }

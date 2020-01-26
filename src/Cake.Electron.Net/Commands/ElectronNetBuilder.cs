@@ -27,6 +27,7 @@ namespace Cake.Electron.Net.Commands
                 settings.AbsolutePath,
                 settings.PackageJson,
                 settings.InstallModules,
+                settings.Manifest,
                 settings.ElectronParams);
         }
 
@@ -40,6 +41,7 @@ namespace Cake.Electron.Net.Commands
             string absolutePath = null,
             string packageJson = null,
             bool installModules = false,
+            string manifest = null,
             params string[] electronParams)
         {
             return ElectronNetBuild(
@@ -51,6 +53,7 @@ namespace Cake.Electron.Net.Commands
                 absolutePath,
                 packageJson,
                 installModules,
+                manifest,
                 electronParams);
         }
 
@@ -64,6 +67,7 @@ namespace Cake.Electron.Net.Commands
             string absolutePath = null,
             string packageJson = null,
             bool installModules = false,
+            string manifest = null,
             params string[] electronParams)
         {
             if (workingDirectory == null)
@@ -75,8 +79,7 @@ namespace Cake.Electron.Net.Commands
             {
                 throw new ArgumentNullException(nameof(electronTarget));
             }
-
-
+            
             var cmdBuilder = new StringBuilder();
             cmdBuilder.Append($"{CmdBase} /target {electronTarget}");
 
@@ -103,6 +106,11 @@ namespace Cake.Electron.Net.Commands
             if (installModules)
             {
                 cmdBuilder.Append(" /install-modules");
+            }
+
+            if (manifest != null)
+            {
+                cmdBuilder.Append($" /manifest {manifest}");
             }
 
             if (electronParams == null || electronParams.Length <= 0)
@@ -134,6 +142,7 @@ namespace Cake.Electron.Net.Commands
                 settings.AbsolutePath,
                 settings.PackageJson,
                 settings.InstallModules,
+                settings.Manifest,
                 settings.ElectronParams);
         }
 
@@ -148,6 +157,7 @@ namespace Cake.Electron.Net.Commands
             string absolutePath = null,
             string packageJson = null,
             bool installModules = false,
+            string manifest = null,
             params string[] electronParams)
         {
             return ElectronNetBuildCustom(
@@ -160,6 +170,7 @@ namespace Cake.Electron.Net.Commands
                 absolutePath,
                 packageJson,
                 installModules,
+                manifest,
                 electronParams);
         }
 
@@ -174,6 +185,7 @@ namespace Cake.Electron.Net.Commands
             string absolutePath = null,
             string packageJson = null,
             bool installModules = false,
+            string manifest = null,
             params string[] electronParams)
         {
             if (workingDirectory == null)
@@ -217,6 +229,11 @@ namespace Cake.Electron.Net.Commands
             if (installModules)
             {
                 cmdBuilder.Append(" /install-modules");
+            }
+
+            if (manifest != null)
+            {
+                cmdBuilder.Append($" /manifest {manifest}");
             }
 
             if (electronParams == null || electronParams.Length <= 0)

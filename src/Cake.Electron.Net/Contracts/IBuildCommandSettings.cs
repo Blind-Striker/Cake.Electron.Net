@@ -12,6 +12,8 @@
 
         bool InstallModules { get; set; }
 
+        string Manifest { get; set; }
+
         string[] ElectronParams { get; set; }
     }
 }

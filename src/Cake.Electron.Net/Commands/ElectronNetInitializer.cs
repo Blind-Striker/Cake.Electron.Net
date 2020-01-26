@@ -3,6 +3,7 @@ using Cake.Core.Annotations;
 using Cake.Electron.Net.Commands.Settings;
 using Cake.Electron.Net.Utils;
 using System;
+using System.Text;
 
 namespace Cake.Electron.Net.Commands
 {
@@ -18,25 +19,35 @@ namespace Cake.Electron.Net.Commands
                 throw new ArgumentNullException(nameof(settings));
             }
 
-            return ElectronNetInit(context, settings.WorkingDirectory, settings.Path);
+            return ElectronNetInit(context, settings.WorkingDirectory, settings.AspCoreProjectPath, settings.Manifest);
         }
 
         [CakeMethodAlias]
-        public static int ElectronNetInit(this ICakeContext context, string workingDirectory, string path = null)
+        public static int ElectronNetInit(
+            this ICakeContext context, 
+            string workingDirectory, 
+            string aspCoreProjectPath = null,
+            string manifest = null)
         {
             if (workingDirectory == null)
             {
                 throw new ArgumentNullException(nameof(workingDirectory));
             }
 
-            string cmd = CmdBase;
+            var cmdBuilder = new StringBuilder();
+            cmdBuilder.Append($"{CmdBase}");
 
-            if (path != null)
+            if (aspCoreProjectPath != null)
             {
-                cmd = $"{cmd} {path}";
+                cmdBuilder.Append($" /project-path {aspCoreProjectPath}");
             }
 
-            return ElectronCakeContext.Current.ProcessHelper.CmdExecute(cmd, workingDirectory);
+            if (manifest != null)
+            {
+                cmdBuilder.Append($" /manifest {manifest}");
+            }
+
+            return ElectronCakeContext.Current.ProcessHelper.CmdExecute(cmdBuilder.ToString(), workingDirectory);
         }
     }
 }

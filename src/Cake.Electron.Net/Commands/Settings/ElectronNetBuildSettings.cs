@@ -16,6 +16,8 @@ namespace Cake.Electron.Net.Commands.Settings
 
         public bool InstallModules { get; set; } = false;
 
+        public string Manifest { get; set; }
+
         public string[] ElectronParams { get; set; }
 
         public string WorkingDirectory { get; set; }

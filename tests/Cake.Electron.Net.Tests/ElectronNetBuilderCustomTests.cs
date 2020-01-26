@@ -188,8 +188,9 @@ namespace Cake.Electron.Net.Tests
             commandBuilderMock.Verify(builder => builder.SwitchHelper(It.IsAny<string[]>()), Times.Never);
         }
 
+        
         [Fact]
-        public void ElectronNetBuildCustom_Should_Execute_Command_By_Given_WorkingDirectory_ElectronTarget_And_DotnetConfig_And_ElectronArch_And_AbsolutePath_And_PackageJson_And_InstallModules_And_ElectronParams()
+        public void ElectronNetBuildCustom_Should_Execute_Command_By_Given_WorkingDirectory_ElectronTarget_And_DotnetConfig_And_ElectronArch_And_AbsolutePath_And_PackageJson_And_InstallModules_And_Manifest()
         {
             ICakeContext cakeContext = _cakeContextMock.Object;
 
@@ -200,9 +201,38 @@ namespace Cake.Electron.Net.Tests
             const string absolutePath = "./path/under";
             const string packageJson = "package.json";
             const bool installModules = true;
+            const string manifest = "test";
+
+            string expectedCommand = $"{CmdBase} /target custom {electronTarget} /dotnet-configuration {dotnetConfig} /electron-arch {electronArch} /absolute-path {absolutePath} /package-json {packageJson} /install-modules /manifest {manifest}";
+
+            var processHelperMock = new Mock<IProcessHelper>(MockBehavior.Strict);
+            var commandBuilderMock = new Mock<ICommandBuilder>(MockBehavior.Strict);
+            ElectronCakeContext.Current = new TestCakeContext(processHelperMock, commandBuilderMock);
+
+            processHelperMock.Setup(helper => helper.CmdExecute(It.Is<string>(s => s == expectedCommand), It.Is<string>(s => s == workingDirectory), It.IsAny<bool>(), It.IsAny<bool>())).Returns(1);
+
+            cakeContext.ElectronNetBuildCustom(workingDirectory, electronTarget, electronArch, dotnetConfig, null, absolutePath, packageJson, installModules, manifest);
+
+            processHelperMock.Verify(helper => helper.CmdExecute(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>()), Times.Once);
+            commandBuilderMock.Verify(builder => builder.SwitchHelper(It.IsAny<string[]>()), Times.Never);
+        }
+
+        [Fact]
+        public void ElectronNetBuildCustom_Should_Execute_Command_By_Given_WorkingDirectory_ElectronTarget_And_DotnetConfig_And_ElectronArch_And_AbsolutePath_And_PackageJson_And_InstallModules_And_Manifest_And_ElectronParams()
+        {
+            ICakeContext cakeContext = _cakeContextMock.Object;
+
+            const string workingDirectory = "./SomeDirectory";
+            const string electronTarget = "win";
+            const string electronArch = "ia32";
+            const string dotnetConfig = "Release";
+            const string absolutePath = "./path/under";
+            const string packageJson = "package.json";
+            const bool installModules = true;
+            const string manifest = "test";
             const string electronParams = "command=conquer";
 
-            string expectedCommand = $"{CmdBase} /target custom {electronTarget} /dotnet-configuration {dotnetConfig} /electron-arch {electronArch} /absolute-path {absolutePath} /package-json {packageJson} /install-modules /electron-params \"--command=conquer\"";
+            string expectedCommand = $"{CmdBase} /target custom {electronTarget} /dotnet-configuration {dotnetConfig} /electron-arch {electronArch} /absolute-path {absolutePath} /package-json {packageJson} /install-modules /manifest {manifest} /electron-params \"--command=conquer\"";
 
             var commandBuilderMock = new Mock<ICommandBuilder>(MockBehavior.Strict);
             var processHelperMock = new Mock<IProcessHelper>(MockBehavior.Strict);
@@ -214,7 +244,7 @@ namespace Cake.Electron.Net.Tests
 
             processHelperMock.Setup(helper => helper.CmdExecute(It.Is<string>(s => s == expectedCommand), It.Is<string>(s => s == workingDirectory), It.IsAny<bool>(), It.IsAny<bool>())).Returns(1);
 
-            cakeContext.ElectronNetBuildCustom(workingDirectory, electronTarget, electronArch, dotnetConfig, null, absolutePath, packageJson, installModules, electronParams);
+            cakeContext.ElectronNetBuildCustom(workingDirectory, electronTarget, electronArch, dotnetConfig, null, absolutePath, packageJson, installModules, manifest, electronParams);
 
             processHelperMock.Verify(helper => helper.CmdExecute(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>()), Times.Once);
             commandBuilderMock.Verify(builder => builder.SwitchHelper(It.IsAny<string[]>()), Times.Once);

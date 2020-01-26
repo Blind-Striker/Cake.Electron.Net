@@ -11,25 +11,27 @@ namespace Cake.Electron.Net.Utils
         {
             get
             {
-                if (Thread.GetData(Thread.GetNamedDataSlot("ElectroCake")) is ElectronCakeContext electroCakeContext)
+                if (Thread.GetData(Thread.GetNamedDataSlot("ElectroCake")) is ElectronCakeContext electronCakeContext)
                 {
-                    return electroCakeContext;
+                    return electronCakeContext;
                 }
 
-                electroCakeContext = DefaultCakeContext;
-                Thread.SetData(Thread.GetNamedDataSlot("ElectroCake"), electroCakeContext);
-                return electroCakeContext;
+                electronCakeContext = DefaultCakeContext;
+                Thread.SetData(Thread.GetNamedDataSlot("ElectroCake"), electronCakeContext);
+                return electronCakeContext;
             }
             set => Thread.SetData(Thread.GetNamedDataSlot("ElectroCake"), value);
         }
 
         public abstract IProcessHelper ProcessHelper { get; }
+
         public abstract ICommandBuilder CommandBuilder { get; }
     }
 
     internal sealed class DefaultElectronCakeContext : ElectronCakeContext
     {
         public override IProcessHelper ProcessHelper => new ProcessHelper();
+
         public override ICommandBuilder CommandBuilder => new CommandBuilder();
     }
 }
