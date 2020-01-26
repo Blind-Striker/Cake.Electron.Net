@@ -1,4 +1,5 @@
 ﻿using Cake.Electron.Net.Contracts;
+
 using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;

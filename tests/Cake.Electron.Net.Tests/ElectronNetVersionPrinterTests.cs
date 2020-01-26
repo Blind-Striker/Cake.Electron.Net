@@ -4,8 +4,11 @@ using Cake.Electron.Net.Commands.Settings;
 using Cake.Electron.Net.Contracts;
 using Cake.Electron.Net.Tests.Mocks;
 using Cake.Electron.Net.Utils;
+
 using Moq;
+
 using System;
+
 using Xunit;
 
 namespace Cake.Electron.Net.Tests
@@ -25,7 +28,7 @@ namespace Cake.Electron.Net.Tests
         {
             ICakeContext cakeContext = _cakeContextMock.Object;
 
-            Assert.Throws<ArgumentNullException>(() => cakeContext.ElectronNetVersion((string)null));
+            Assert.Throws<ArgumentNullException>(() => cakeContext.ElectronNetVersion((string) null));
         }
 
         [Fact]
@@ -33,12 +36,14 @@ namespace Cake.Electron.Net.Tests
         {
             ICakeContext cakeContext = _cakeContextMock.Object;
 
-            string workingDirectory = "./SomeDirectory";
+            var workingDirectory = "./SomeDirectory";
 
             var processHelperMock = new Mock<IProcessHelper>(MockBehavior.Strict);
             ElectronCakeContext.Current = new TestCakeContext(processHelperMock, null);
 
-            processHelperMock.Setup(helper => helper.CmdExecute(It.Is<string>(s => s == CmdBase), It.Is<string>(s => s == workingDirectory), It.IsAny<bool>(), It.IsAny<bool>())).Returns(1);
+            processHelperMock
+                .Setup(helper => helper.CmdExecute(It.Is<string>(s => s == CmdBase), It.Is<string>(s => s == workingDirectory), It.IsAny<bool>(), It.IsAny<bool>()))
+                .Returns(1);
 
             cakeContext.ElectronNetVersion(workingDirectory);
 
@@ -50,7 +55,7 @@ namespace Cake.Electron.Net.Tests
         {
             ICakeContext cakeContext = _cakeContextMock.Object;
 
-            Assert.Throws<ArgumentNullException>(() => cakeContext.ElectronNetVersion((ElectronNetVersionSettings)null));
+            Assert.Throws<ArgumentNullException>(() => cakeContext.ElectronNetVersion((ElectronNetVersionSettings) null));
         }
 
         [Fact]
@@ -58,15 +63,14 @@ namespace Cake.Electron.Net.Tests
         {
             ICakeContext cakeContext = _cakeContextMock.Object;
 
-            ElectronNetVersionSettings electronNetInitSettings = new ElectronNetVersionSettings()
-            {
-                WorkingDirectory = "./SomeDirectory"
-            };
+            var electronNetInitSettings = new ElectronNetVersionSettings() {WorkingDirectory = "./SomeDirectory"};
 
             var processHelperMock = new Mock<IProcessHelper>(MockBehavior.Strict);
             ElectronCakeContext.Current = new TestCakeContext(processHelperMock, null);
 
-            processHelperMock.Setup(helper => helper.CmdExecute(It.Is<string>(s => s == CmdBase), It.Is<string>(s => s == electronNetInitSettings.WorkingDirectory), It.IsAny<bool>(), It.IsAny<bool>())).Returns(1);
+            processHelperMock.Setup(helper => helper.CmdExecute(It.Is<string>(s => s == CmdBase), It.Is<string>(s => s == electronNetInitSettings.WorkingDirectory),
+                                                                It.IsAny<bool>(), It.IsAny<bool>()))
+                             .Returns(1);
 
             cakeContext.ElectronNetVersion(electronNetInitSettings);
 

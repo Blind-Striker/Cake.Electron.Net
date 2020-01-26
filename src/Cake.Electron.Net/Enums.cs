@@ -52,7 +52,6 @@
         public static readonly ElectronTargetCustom Tizen4 = new ElectronTargetCustom("Tizen4", "tizen.4.0.0");
         public static readonly ElectronTargetCustom Tizen5 = new ElectronTargetCustom("Tizen5", "tizen.5.0.0");
 
-
         public static readonly ElectronTargetCustom MacOsX64 = new ElectronTargetCustom("MacOsX64", "osx-x64");
         public static readonly ElectronTargetCustom MacOs1010X64 = new ElectronTargetCustom("MacOs1010X64", "osx.10.10-x64");
         public static readonly ElectronTargetCustom MacOs1011X64 = new ElectronTargetCustom("MacOs1011X64", "osx.10.11-x64");

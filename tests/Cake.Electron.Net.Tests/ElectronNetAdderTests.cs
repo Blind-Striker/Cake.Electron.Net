@@ -1,11 +1,14 @@
 ﻿using System;
+
 using Cake.Core;
 using Cake.Electron.Net.Commands;
 using Cake.Electron.Net.Commands.Settings;
 using Cake.Electron.Net.Contracts;
 using Cake.Electron.Net.Tests.Mocks;
 using Cake.Electron.Net.Utils;
+
 using Moq;
+
 using Xunit;
 
 namespace Cake.Electron.Net.Tests
@@ -48,7 +51,9 @@ namespace Cake.Electron.Net.Tests
 
             var processHelperMock = new Mock<IProcessHelper>(MockBehavior.Strict);
             ElectronCakeContext.Current = new TestCakeContext(processHelperMock, null);
-            processHelperMock.Setup(helper => helper.CmdExecute(It.Is<string>(s => s == $"{CmdBase} {add}"), It.Is<string>(s => s == workingDirectory), It.IsAny<bool>(), It.IsAny<bool>())).Returns(1);
+            processHelperMock.Setup(helper => helper.CmdExecute(It.Is<string>(s => s == $"{CmdBase} {add}"), It.Is<string>(s => s == workingDirectory), It.IsAny<bool>(),
+                                                                It.IsAny<bool>()))
+                             .Returns(1);
 
             cakeContext.ElectronNetAdd(workingDirectory, add);
 
@@ -68,15 +73,13 @@ namespace Cake.Electron.Net.Tests
         {
             ICakeContext cakeContext = _cakeContextMock.Object;
 
-            var electronNetInitSettings = new ElectronNetAddSettings()
-            {
-                WorkingDirectory = "./SomeDirectory",
-                Add = ElectronAdd.ElectronHostHook
-            };
+            var electronNetInitSettings = new ElectronNetAddSettings() {WorkingDirectory = "./SomeDirectory", Add = ElectronAdd.ElectronHostHook};
 
             var processHelperMock = new Mock<IProcessHelper>(MockBehavior.Strict);
             ElectronCakeContext.Current = new TestCakeContext(processHelperMock, null);
-            processHelperMock.Setup(helper => helper.CmdExecute(It.Is<string>(s => s == $"{CmdBase} {electronNetInitSettings.Add}"), It.Is<string>(s => s == electronNetInitSettings.WorkingDirectory), It.IsAny<bool>(), It.IsAny<bool>())).Returns(1);
+            processHelperMock.Setup(helper => helper.CmdExecute(It.Is<string>(s => s == $"{CmdBase} {electronNetInitSettings.Add}"),
+                                                                It.Is<string>(s => s == electronNetInitSettings.WorkingDirectory), It.IsAny<bool>(), It.IsAny<bool>()))
+                             .Returns(1);
 
             cakeContext.ElectronNetAdd(electronNetInitSettings);
 

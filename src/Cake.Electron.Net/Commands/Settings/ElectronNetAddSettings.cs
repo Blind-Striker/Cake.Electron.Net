@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+
 using Cake.Electron.Net.Contracts;
 
 namespace Cake.Electron.Net.Commands.Settings
