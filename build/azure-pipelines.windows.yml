@@ -20,7 +20,7 @@ steps:
       targetType: filePath
       filePath: ./build.ps1
 
-  - task: PublishTestResults@2
+  - task: PublishTestResults@1
     inputs:
       testResultsFormat: "VSTest"
       testResultsFiles: "**/*.trx"
