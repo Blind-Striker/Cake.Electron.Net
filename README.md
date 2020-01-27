@@ -80,6 +80,45 @@ Licensed under MIT, see [LICENSE](LICENSE) for the full text.
 
 ## Important Notes
 
+### ElectronNET.API & ElectronNET.CLI Version 5.22.12
+
+Make sure you also have the new Electron.NET CLI 5.22.12 version. This now uses [electron-builder](https://www.electron.build/configuration/configuration) and the necessary configuration to build is made in the **electron.manifest.json** file. In addition, own Electron.NET configurations are stored. Please make sure that your **electron.manifest.json** file has the following new structure:
+
+```
+{
+  "executable": "{{executable}}",
+  "splashscreen": {
+    "imageFile": ""
+  },
+  "singleInstance": false,
+  "build": {
+    "appId": "com.{{executable}}.app",
+    "productName": "{{executable}}",
+    "copyright": "Copyright © 2019",
+    "buildVersion": "1.0.0",
+    "compression": "maximum",
+    "directories": {
+      "output": "../../../bin/Desktop"
+    },
+    "extraResources": [
+      {
+        "from": "./bin",
+        "to": "bin",
+        "filter": ["**/*"]
+      }
+    ],
+    "files": [
+      {
+        "from": "./ElectronHostHook/node_modules",
+        "to": "ElectronHostHook/node_modules",
+        "filter": ["**/*"]
+      },
+      "**/*"
+    ]
+  }
+}
+```
+
 ### ElectronNET.CLI Version 0.0.9
 
 In the Version 0.0.9 the CLI was not a global tool and needed to be registred like this in the .csproj:
