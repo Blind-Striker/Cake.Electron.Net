@@ -19,7 +19,7 @@ schedules:
       - master
     always: true
 pool:
-  name: Hosted macOS
+  vmImage: macOS-10.14
 steps:
   - bash: "sudo curl -o /usr/local/bin/nuget.exe https://dist.nuget.org/win-x86-commandline/latest/nuget.exe"
     displayName: "Install Nuget"
