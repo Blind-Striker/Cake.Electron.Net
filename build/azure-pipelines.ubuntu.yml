@@ -3,14 +3,21 @@ trigger:
     include:
       - "*"
   paths:
-    include:
-      - "*"
     exclude:
-      - "**/*.md"
+      - README.md
+      - CONTRIBUTING.md
+      - LICENSE
 pr:
   branches:
     include:
       - "*"
+schedules:
+  - cron: "0 0 12 ? * SUN *"
+    displayName: Weekly Sunday build
+    branches:
+      include:
+      - master
+    always: true
 pool:
   name: Hosted Ubuntu 1604
 steps:

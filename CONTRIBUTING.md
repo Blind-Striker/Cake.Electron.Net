@@ -4,10 +4,10 @@ All kind of pull requests even for things like typos, documentation, test cases,
 
 ## Getting Started
 
--   Make sure you have a [GitHub account](https://github.com/signup/free)
--   Submit a ticket for your issue, assuming one does not already exist.
-    -   Clearly describe the issue including steps to reproduce the bug.
--   Fork the repository on GitHub
+- Make sure you have a [GitHub account](https://github.com/signup/free)
+- Submit a ticket for your issue, assuming one does not already exist.
+  - Clearly describe the issue including steps to reproduce the bug.
+- Fork the repository on GitHub
 
 ## Pull requests
 
@@ -61,4 +61,4 @@ included in the project:
    ```
 
 7. [Open a Pull Request](https://help.github.com/articles/using-pull-requests/)
-    with a clear title and description against the `master` branch.
+   with a clear title and description against the `master` branch.

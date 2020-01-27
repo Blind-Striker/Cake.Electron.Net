@@ -4,6 +4,11 @@ trigger:
       - master
       - releases/*
       - feature/*
+  paths:
+    exclude:
+      - README.md
+      - CONTRIBUTING.md
+      - LICENSE
 pr: none
 pool:
   name: Hosted Ubuntu 1604
