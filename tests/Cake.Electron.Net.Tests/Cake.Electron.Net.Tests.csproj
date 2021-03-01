@@ -32,7 +32,7 @@
 
   <ItemGroup>
     <PackageReference Include="Appveyor.TestLogger" Version="2.0.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.1" />
     <PackageReference Include="Moq" Version="4.13.1" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.abstractions" Version="2.0.3" />
