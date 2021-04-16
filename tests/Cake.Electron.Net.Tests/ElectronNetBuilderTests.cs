@@ -244,6 +244,8 @@ namespace Cake.Electron.Net.Tests
             const string packageJson = "package.json";
             const bool installModules = true;
             const string manifest = "test";
+			const bool PublishSingleFile = true;
+			const bool PublishReadyToRun = true;
             const string electronParams = "command=conquer";
 
             string expectedCommand =
@@ -259,7 +261,7 @@ namespace Cake.Electron.Net.Tests
                                                                 It.IsAny<bool>()))
                              .Returns(1);
 
-            cakeContext.ElectronNetBuild(workingDirectory, electronTarget, dotnetConfig, null, absolutePath, packageJson, installModules, manifest, electronParams);
+            cakeContext.ElectronNetBuild(workingDirectory, electronTarget, dotnetConfig, null, absolutePath, packageJson, installModules, manifest, PublishSingleFile, PublishReadyToRun, electronParams);
 
             processHelperMock.Verify(helper => helper.CmdExecute(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>()), Times.Once);
             commandBuilderMock.Verify(builder => builder.SwitchHelper(It.IsAny<string[]>()), Times.Once);
