@@ -34,7 +34,7 @@ namespace Cake.Electron.Net.Commands
         }
 
         [CakeMethodAlias]
-        public static int ElectronNetBuild(this ICakeContext context, string workingDirectory, string electronTarget, string dotNetConfig = null, PublishSingleFile = true, PublishReadyToRun = true,
+        public static int ElectronNetBuild(this ICakeContext context, string workingDirectory, string electronTarget, string dotNetConfig = null, bool PublishSingleFile = true, bool PublishReadyToRun = true,
                                            string relativePath = null, string absolutePath = null, string packageJson = null, bool installModules = false,
                                            string manifest = null, params string[] electronParams)
         {
