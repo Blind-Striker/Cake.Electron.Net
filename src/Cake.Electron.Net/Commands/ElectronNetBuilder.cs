@@ -34,7 +34,7 @@ namespace Cake.Electron.Net.Commands
         }
 
         [CakeMethodAlias]
-        public static int ElectronNetBuild(this ICakeContext context, string workingDirectory, string electronTarget, string dotNetConfig = null,
+        public static int ElectronNetBuild(this ICakeContext context, string workingDirectory, string electronTarget, string dotNetConfig = null, PublishSingleFile = true, PublishReadyToRun = true,
                                            string relativePath = null, string absolutePath = null, string packageJson = null, bool installModules = false,
                                            string manifest = null, params string[] electronParams)
         {
@@ -55,6 +55,16 @@ namespace Cake.Electron.Net.Commands
             {
                 cmdBuilder.Append($" /dotnet-configuration {dotNetConfig}");
             }
+
+			if (PublishSingleFile == false)
+			{
+				cmdBuilder.Append(" /PublishSingleFile false");
+			}
+
+			if (PublishReadyToRun == false)
+			{
+				cmdBuilder.Append(" /PublishReadyToRun false");
+			}
 
             if (relativePath != null)
             {
@@ -117,7 +127,7 @@ namespace Cake.Electron.Net.Commands
 
         [CakeMethodAlias]
         public static int ElectronNetBuildCustom(this ICakeContext context, string workingDirectory, string electronTarget, string electronArch = null,
-                                                 string dotNetConfig = null, string relativePath = null, string absolutePath = null, string packageJson = null,
+                                                 string dotNetConfig = null, bool PublishSingleFile = true, bool PublishReadyToRun = true, string relativePath = null, string absolutePath = null, string packageJson = null,
                                                  bool installModules = false, string manifest = null, params string[] electronParams)
         {
             if (workingDirectory == null)
@@ -137,6 +147,16 @@ namespace Cake.Electron.Net.Commands
             {
                 cmdBuilder.Append($" /dotnet-configuration {dotNetConfig}");
             }
+
+			if (PublishSingleFile == false)
+			{
+				cmdBuilder.Append(" /PublishSingleFile false");
+			}
+
+			if (PublishReadyToRun == false)
+			{
+				cmdBuilder.Append(" /PublishReadyToRun false");
+			}
 
             if (electronArch != null)
             {
