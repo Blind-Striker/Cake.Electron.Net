@@ -10,7 +10,7 @@ namespace Cake.Electron.Net.Commands.Settings
 
 		public bool PublishSingleFile { get; set; } = true;
 
-		public bool PublishReadyToReady { get; set; } = true;
+		public bool PublishReadyToRun { get; set; } = true;
 
         public string RelativePath { get; set; }
 
