@@ -8,6 +8,10 @@ namespace Cake.Electron.Net.Commands.Settings
 
         public DotNetConfig DotNetConfig { get; set; } = DotNetConfig.Release;
 
+		public bool PublishSingleFile { get; set; } = true;
+
+		public bool PublishReadyToRun { get; set; } = true;
+
         public string RelativePath { get; set; }
 
         public string AbsolutePath { get; set; }
