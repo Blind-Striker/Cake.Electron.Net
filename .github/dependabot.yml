@@ -1,0 +1,22 @@
+version: 2
+updates:
+- package-ecosystem: nuget
+  directory: "/"
+  schedule:
+    interval: weekly
+    time: "03:00"
+  open-pull-requests-limit: 10
+  reviewers:
+  - Blind-Striker
+  ignore:
+  - dependency-name: Microsoft.NET.Test.Sdk
+    versions:
+    - 16.8.3
+    - 16.9.1
+  - dependency-name: Cake.Core
+    versions:
+    - 0.38.5
+    - 1.0.0
+  - dependency-name: Moq
+    versions:
+    - 4.16.0
